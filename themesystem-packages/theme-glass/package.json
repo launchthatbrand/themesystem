@@ -1,0 +1,26 @@
+{
+  "name": "@acme/theme-glass",
+  "version": "0.1.0",
+  "description": "Glass theme for the ACME Theme System",
+  "author": "ACME Corp",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/css/glass.css",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm build:ts && pnpm build:css && pnpm build:preview",
+    "build:ts": "tsc",
+    "build:css": "mkdir -p dist/css && cp src/glass.css dist/css/",
+    "build:preview": "node ../../scripts/generate-theme-preview.js --theme=glass"
+  },
+  "peerDependencies": {
+    "@acme/theme-system": "^0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

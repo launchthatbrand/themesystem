@@ -1,0 +1,66 @@
+/* Template Theme */
+.theme-template {
+  /* Template theme variables */
+  --template-background: rgba(250, 250, 255, 0.9);
+  --template-blur: 5px;
+  --template-border: 1px solid rgba(200, 200, 255, 0.3);
+  --template-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  --template-radius: 0.5rem;
+
+  /* Override base variables */
+  --card: 215 20% 97%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 210 100% 50%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --radius: var(--template-radius);
+
+  /* Template theme fonts */
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* Card specific styles */
+.theme-template [class*="bg-card"] {
+  background: var(--template-background);
+  backdrop-filter: blur(var(--template-blur));
+  -webkit-backdrop-filter: blur(var(--template-blur));
+  border: var(--template-border);
+  box-shadow: var(--template-shadow);
+  border-radius: var(--template-radius);
+}
+
+.theme-template [class*="bg-card"]:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.theme-template button {
+  backdrop-filter: blur(var(--template-blur));
+  -webkit-backdrop-filter: blur(var(--template-blur));
+  border: var(--template-border);
+  box-shadow: var(--template-shadow);
+  transition: all 0.2s ease;
+}
+
+.theme-template button:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Dark mode overrides */
+.dark.theme-template {
+  --template-background: rgba(25, 25, 35, 0.8);
+  --template-border: 1px solid rgba(100, 100, 200, 0.2);
+  --template-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 210 100% 65%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+}

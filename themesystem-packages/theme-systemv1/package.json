@@ -1,0 +1,38 @@
+{
+  "name": "@acme/theme-system-v1",
+  "version": "0.1.0",
+  "description": "Pluggable theme system for ACME applications",
+  "author": "ACME Corp",
+  "license": "MIT",
+  "main": "src/index.js",
+  "style": "src/styles/index.css",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles": "./src/styles/index.css"
+  },
+  "files": [
+    "dist",
+    "src/styles",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^5.2.2"
+  }
+}
