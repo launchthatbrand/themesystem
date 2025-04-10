@@ -1,7 +1,7 @@
 import "~/app/globals.css";
 
-import { FloatingThemeSwitcher, ServerThemeProvider } from "@acme/theme-system";
 import type { Metadata, Viewport } from "next";
+import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
 
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
@@ -48,16 +48,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <ServerThemeProvider
-          defaultTheme="system"
-          defaultStyle="default"
-          disableTransitionOnChange={false}
-          enableSystem
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <FloatingThemeSwitcher position="bottom-right" />
+          <div className="absolute bottom-4 right-4">
+            <ThemeToggle />
+          </div>
           <Toaster />
-        </ServerThemeProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -245,9 +245,12 @@ importers:
       '@acme/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@acme/theme-system':
+      '@acme/theme-core':
         specifier: workspace:*
-        version: link:../../themesystem-packages/theme-system
+        version: link:../../themesystem-packages/theme-core
+      '@acme/theme-nextjs':
+        specifier: workspace:*
+        version: link:../../themesystem-packages/theme-nextjs
       '@acme/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -660,6 +663,28 @@ importers:
         specifier: ^5.2.2
         version: 5.8.2
 
+  themesystem-packages/theme-core:
+    dependencies:
+      react:
+        specifier: ^18.2.0 || ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^18.2.0 || ^19.0.0
+        version: 19.0.0(react@19.0.0)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.13.11
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.0.12
+      eslint:
+        specifier: ^8.53.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.2.2
+        version: 5.8.2
+
   themesystem-packages/theme-glass:
     dependencies:
       '@acme/theme-system':
@@ -671,6 +696,34 @@ importers:
         version: 5.8.2
 
   themesystem-packages/theme-minimal: {}
+
+  themesystem-packages/theme-nextjs:
+    dependencies:
+      '@acme/theme-core':
+        specifier: workspace:*
+        version: link:../theme-core
+      next:
+        specifier: ^14.0.0 || ^15.0.0
+        version: 15.2.3(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react:
+        specifier: ^18.2.0 || ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^18.2.0 || ^19.0.0
+        version: 19.0.0(react@19.0.0)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.13.11
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.0.12
+      eslint:
+        specifier: ^8.53.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.2.2
+        version: 5.8.2
 
   themesystem-packages/theme-system:
     dependencies:
