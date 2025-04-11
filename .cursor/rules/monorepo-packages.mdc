@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This is a monorepo. when modifying or creating package.json files, make sure you cross reference with [pnpm-workspace.yaml](mdc:pnpm-workspace.yaml) and reference like "workspace:*", "catalog:react18", "catalog:react19", ect

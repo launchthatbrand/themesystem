@@ -1,0 +1,30 @@
+{
+  "name": "@themesystem/nextjs",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./core": "./src/core.ts",
+    "./ui": "./src/ui.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@themesystem/config": "workspace:*",
+    "@themesystem/core": "workspace:*",
+    "@themesystem/ui": "workspace:*",
+    "next": "^15.2.3",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "typescript": "^5.2.2"
+  }
+}

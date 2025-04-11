@@ -4,6 +4,106 @@
 
 ThemeSystem v2 should be rebuilt with a focus on modularity, extensibility, and framework agnosticism while maintaining the powerful features of v1. Below are comprehensive guidelines for the v2 implementation.
 
+## Configuration System
+
+ThemeSystem v2 introduces a configuration-first approach using a `themesystem.config.ts` file:
+
+```typescript
+// themesystem.config.ts
+import { defineConfig } from "@themesystem/config";
+
+export default defineConfig({
+  // Base theme configuration
+  themes: {
+    light: {
+      name: "Light",
+      description: "Default light theme",
+    },
+    dark: {
+      name: "Dark",
+      description: "Default dark theme",
+    },
+    system: {
+      name: "System",
+      description: "Follows system preferences",
+    },
+  },
+
+  // Theme styles (e.g., glass, brutalist)
+  styles: {
+    default: {
+      name: "Default",
+      description: "Standard theme style",
+    },
+    glass: {
+      name: "Glass",
+      description: "Glass morphism style",
+    },
+    brutalist: {
+      name: "Brutalist",
+      description: "Brutalist design style",
+    },
+  },
+
+  // Extensions configuration
+  extensions: {
+    // Component-specific extensions
+    components: {
+      button: {
+        variants: ["primary", "secondary", "outline"],
+        sizes: ["sm", "md", "lg"],
+      },
+      card: {
+        variants: ["default", "bordered", "elevated"],
+      },
+    },
+    // Global extensions
+    global: {
+      borderRadius: {
+        sm: "0.25rem",
+        md: "0.5rem",
+        lg: "1rem",
+      },
+      spacing: {
+        sm: "0.5rem",
+        md: "1rem",
+        lg: "2rem",
+      },
+    },
+  },
+
+  // Storage configuration
+  storage: {
+    key: "theme-system-state",
+    type: "localStorage", // or "cookie" for SSR
+  },
+
+  // Plugin configuration
+  plugins: [
+    // Plugin instances or configurations
+  ],
+
+  // Framework-specific configuration
+  framework: {
+    // Next.js specific options
+    nextjs: {
+      serverSideRendering: true,
+      cookieOptions: {
+        path: "/",
+        sameSite: "lax",
+      },
+    },
+  },
+});
+```
+
+The configuration system provides:
+
+1. **Type Safety**: Full TypeScript support with autocompletion
+2. **Validation**: Runtime validation of configuration
+3. **Extensibility**: Easy to add new configuration options
+4. **Framework Integration**: Framework-specific configuration sections
+
 ## Architectural Principles
 
 1. **Module-Based Architecture**
@@ -36,6 +136,7 @@ ThemeSystem v2 should be rebuilt with a focus on modularity, extensibility, and 
 
 ```
 @themesystem/core         # Core state management, no UI components
+@themesystem/config       # Configuration system and types
 @themesystem/react        # React-specific hooks and components
 @themesystem/nextjs       # Next.js adapter with SSR support
 @themesystem/ui           # UI components (ThemeSwitcher, etc.)

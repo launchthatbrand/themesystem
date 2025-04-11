@@ -18,7 +18,7 @@
     "build:preview": "node ../../scripts/generate-theme-preview.js --theme=template"
   },
   "peerDependencies": {
-    "@acme/theme-system": "^0.1.0"
+    "@themesystem/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.2.2"
