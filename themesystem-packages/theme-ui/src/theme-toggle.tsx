@@ -1,7 +1,13 @@
 "use client";
 
-import { Sheet, SheetContent, SheetTrigger } from "@acme/ui/sheet";
-import { Tabs, TabsList, TabsTrigger } from "@acme/ui/tabs";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./drawer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 import { Button } from "./button";
 import { useTheme } from "next-themes";
@@ -10,24 +16,48 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Drawer modal={false}>
+      <DrawerTrigger asChild>
         <Button variant="ghost" size="icon">
           <SunIcon className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <MoonIcon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <Tabs defaultValue={theme} onValueChange={setTheme}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="light">Light</TabsTrigger>
-            <TabsTrigger value="dark">Dark</TabsTrigger>
-            <TabsTrigger value="system">System</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </SheetContent>
-    </Sheet>
+      </DrawerTrigger>
+      <DrawerContent className="h-[300px]">
+        <DrawerHeader>
+          <DrawerTitle>ThemeSystem</DrawerTitle>
+        </DrawerHeader>
+        <div className="p-4">
+          <Tabs defaultValue="base" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="base">Base</TabsTrigger>
+              <TabsTrigger value="themes">Themes</TabsTrigger>
+              <TabsTrigger value="extensions">Extensions</TabsTrigger>
+            </TabsList>
+            <TabsContent value="base" className="mt-4">
+              <Tabs defaultValue={theme} onValueChange={setTheme}>
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="light">Light</TabsTrigger>
+                  <TabsTrigger value="dark">Dark</TabsTrigger>
+                  <TabsTrigger value="system">System</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </TabsContent>
+            <TabsContent value="themes" className="mt-4">
+              <div className="text-sm text-muted-foreground">
+                Theme selection coming soon...
+              </div>
+            </TabsContent>
+            <TabsContent value="extensions" className="mt-4">
+              <div className="text-sm text-muted-foreground">
+                Extensions coming soon...
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
