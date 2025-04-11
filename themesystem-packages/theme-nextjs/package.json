@@ -23,6 +23,7 @@
     "react-dom": "catalog:react19"
   },
   "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "typescript": "^5.2.2"

@@ -1,7 +1,7 @@
 {
-  "name": "@acme/theme-brutalist",
+  "name": "@themesystem/brutalist",
   "version": "0.1.0",
-  "description": "Brutalist theme for the ACME Theme System",
+  "description": "Brutalist theme for ThemeSystem - Bold, raw aesthetic with strong typography and stark contrasts",
   "author": "ACME Corp",
   "license": "MIT",
   "main": "dist/index.js",
@@ -9,18 +9,22 @@
   "style": "dist/css/brutalist.css",
   "files": [
     "dist",
-    "README.md"
+    "src"
   ],
   "scripts": {
-    "build": "pnpm build:ts && pnpm build:css && pnpm build:preview",
-    "build:ts": "tsc",
-    "build:css": "mkdir -p dist/css && cp src/brutalist.css dist/css/",
-    "build:preview": "node ../../scripts/generate-theme-preview.js --theme=brutalist"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {
+  "dependencies": {
+    "@themesystem/config": "workspace:*",
     "@themesystem/core": "workspace:*"
   },
   "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
     "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": "catalog:react19"
   }
 }

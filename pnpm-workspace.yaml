@@ -3,6 +3,9 @@ packages:
   - packages/*
   - tooling/*
   - themesystem-packages/*
+  - "!themesystem-packages/theme-systemv1"
+  - "!@acme/theme-system-v1"
+  - "!@acme/expo"
 
 catalog:
   # Auth

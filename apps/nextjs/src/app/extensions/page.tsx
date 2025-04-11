@@ -1,107 +1,71 @@
 import { Nav } from "@/components/nav";
-import { createNextAdapter } from "@themesystem/nextjs";
+import configImport from "../../../themesystem.config";
 
-// Create a custom extension type
-interface CustomExtension {
-  accentColor: string;
-  borderRadius: string;
-  fontFamily: string;
-}
-
-// Create theme engine options with extensions
-const engineOptions = {
-  defaultTheme: "light",
-  defaultStyle: "default",
-  extensions: {
-    custom: {
-      accentColor: "#0070f3",
-      borderRadius: "0.5rem",
-      fontFamily: "system-ui",
-    },
-  } as Record<string, CustomExtension>,
-};
-
-// Create the theme adapter
-const { ThemeProvider } = createNextAdapter(engineOptions);
+// Type assertion for the config
+const config = configImport;
 
 export default function ExtensionsPage() {
+  // Get extensions with type safety
+  const extensions = config.extensions ?? {};
+
   return (
-    <ThemeProvider>
-      <div className="min-h-screen">
-        <Nav />
-        <main className="container mx-auto p-8">
-          <h1 className="mb-6 text-3xl font-bold">Theme Extensions</h1>
+    // <ServerThemeProvider>
+    //   <ClientThemeProvider>
+    <div className="min-h-screen">
+      <Nav />
+      <main className="container mx-auto p-8">
+        <h1 className="mb-6 text-3xl font-bold">Theme Extensions</h1>
 
-          <div className="grid gap-6">
-            {/* Extension Example 1: Accent Color */}
-            <section className="rounded-lg border p-6">
-              <h2 className="mb-4 text-xl font-semibold">
-                Accent Color Extension
-              </h2>
-              <p className="mb-4">
-                This extension allows you to customize the accent color of your
-                theme.
-              </p>
-              <div className="flex items-center space-x-4">
-                <div
-                  className="h-12 w-12 rounded"
-                  style={{
-                    backgroundColor:
-                      engineOptions.extensions.custom.accentColor,
-                  }}
-                />
-                <code className="rounded bg-muted p-2 text-sm">
-                  accentColor: "{engineOptions.extensions.custom.accentColor}"
-                </code>
-              </div>
-            </section>
+        <div className="grid gap-6">
+          {/* Loop through all extensions */}
+          {Object.entries(extensions).map(([key, extension]) => {
+            // Type cast for safety
+            const ext = extension;
+            return (
+              <section key={key} className="rounded-lg border p-6">
+                <h2 className="mb-4 text-xl font-semibold">{ext.name}</h2>
+                <p className="mb-4">{ext.description}</p>
 
-            {/* Extension Example 2: Border Radius */}
-            <section className="rounded-lg border p-6">
-              <h2 className="mb-4 text-xl font-semibold">
-                Border Radius Extension
-              </h2>
-              <p className="mb-4">
-                Customize the border radius of elements throughout your
-                application.
-              </p>
-              <div className="flex items-center space-x-4">
-                <div
-                  className="h-12 w-12 bg-primary"
-                  style={{
-                    borderRadius: engineOptions.extensions.custom.borderRadius,
-                  }}
-                />
-                <code className="rounded bg-muted p-2 text-sm">
-                  borderRadius: "{engineOptions.extensions.custom.borderRadius}"
-                </code>
-              </div>
-            </section>
+                {/* Display target information */}
+                <div className="mb-4">
+                  <h3 className="mb-2 text-lg font-medium">Target</h3>
+                  <p className="text-sm">
+                    Data Attribute: <code>{ext.target.dataAttribute}</code>
+                  </p>
+                  {ext.target.componentName && (
+                    <p className="text-sm">
+                      Component: <code>{ext.target.componentName}</code>
+                    </p>
+                  )}
+                </div>
 
-            {/* Extension Example 3: Font Family */}
-            <section className="rounded-lg border p-6">
-              <h2 className="mb-4 text-xl font-semibold">
-                Font Family Extension
-              </h2>
-              <p className="mb-4">
-                Change the default font family of your application.
-              </p>
-              <div className="flex items-center space-x-4">
-                <p
-                  style={{
-                    fontFamily: engineOptions.extensions.custom.fontFamily,
-                  }}
-                >
-                  Sample Text
-                </p>
-                <code className="rounded bg-muted p-2 text-sm">
-                  fontFamily: "{engineOptions.extensions.custom.fontFamily}"
-                </code>
-              </div>
-            </section>
-          </div>
-        </main>
-      </div>
-    </ThemeProvider>
+                {/* Display theme information */}
+                {ext.theme && (
+                  <div className="mt-4">
+                    <h3 className="mb-2 text-lg font-medium">Theme</h3>
+                    {ext.theme.tokens && (
+                      <div className="mb-4">
+                        <h4 className="mb-2 font-medium">Tokens</h4>
+                        <pre className="max-h-40 overflow-auto rounded bg-gray-100 p-2 text-xs">
+                          {JSON.stringify(ext.theme.tokens, null, 2)}
+                        </pre>
+                      </div>
+                    )}
+                    {ext.theme.components && (
+                      <div>
+                        <h4 className="mb-2 font-medium">Components</h4>
+                        <pre className="max-h-40 overflow-auto rounded bg-gray-100 p-2 text-xs">
+                          {JSON.stringify(ext.theme.components, null, 2)}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      </main>
+    </div>
   );
 }

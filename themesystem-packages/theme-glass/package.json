@@ -1,7 +1,7 @@
 {
-  "name": "@acme/theme-glass",
+  "name": "@themesystem/glass",
   "version": "0.1.0",
-  "description": "Glass theme for the ACME Theme System",
+  "description": "Glass theme for ThemeSystem - Clean, minimal interface with subtle transparency effects",
   "author": "ACME Corp",
   "license": "MIT",
   "main": "dist/index.js",
@@ -9,18 +9,21 @@
   "style": "dist/css/glass.css",
   "files": [
     "dist",
-    "README.md"
+    "src"
   ],
   "scripts": {
-    "build": "pnpm build:ts && pnpm build:css && pnpm build:preview",
-    "build:ts": "tsc",
-    "build:css": "mkdir -p dist/css && cp src/glass.css dist/css/",
-    "build:preview": "node ../../scripts/generate-theme-preview.js --theme=glass"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {
-    "@themesystem/core": "workspace:*"
+  "dependencies": {
+    "@themesystem/config": "workspace:*"
   },
   "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
     "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": "catalog:react19"
   }
 }

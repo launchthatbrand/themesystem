@@ -1,78 +1,61 @@
 "use client";
 
-import { Theme, ThemeEngine, ThemeEngineOptions, ThemeState } from "./types";
+import type { BaseTheme, ThemeEngineOptions, ThemeState } from "./types";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { ThemeEngineImpl } from "./theme-engine";
 
-interface ThemeProviderProps extends ThemeEngineOptions {
-  children: React.ReactNode;
-}
-
-interface ThemeContextValue {
-  engine: ThemeEngine;
+interface ThemeContextType {
   state: ThemeState;
-  setTheme: (theme: Theme) => Promise<void>;
-  setStyle: (style: string) => Promise<void>;
+  setTheme: (theme: BaseTheme) => void;
+  setStyle: (style: string) => void;
 }
 
-const ThemeProviderContext = createContext<ThemeContextValue | undefined>(
-  undefined,
-);
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
-export function ThemeProvider({ children, ...options }: ThemeProviderProps) {
+export function useTheme() {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+}
+
+interface ThemeProviderProps {
+  children: React.ReactNode;
+  options?: ThemeEngineOptions;
+  defaultTheme?: BaseTheme;
+}
+
+export function ThemeProvider({
+  children,
+  options,
+  defaultTheme,
+}: ThemeProviderProps) {
   const [engine] = useState(() => new ThemeEngineImpl(options));
-  const [state, setState] = useState(engine.getState());
-  const [mounted, setMounted] = useState(false);
+  const [state, setState] = useState<ThemeState>(engine.getState());
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    engine.subscribe((newState: ThemeState) => {
+      setState(newState);
+    });
 
-  useEffect(() => {
-    if (!mounted) return;
-
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-
-    if (state.theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-      root.classList.add(systemTheme);
-      return;
+    if (defaultTheme) {
+      engine.setTheme(defaultTheme);
     }
 
-    root.classList.add(state.theme);
-  }, [state.theme, mounted]);
+    return () => {
+      engine.dispose();
+    };
+  }, [engine, defaultTheme]);
 
   const value = {
-    engine,
     state,
-    setTheme: async (theme: Theme) => {
-      await engine.setState({ theme });
-      setState(engine.getState());
-    },
-    setStyle: async (style: string) => {
-      await engine.setState({ style });
-      setState(engine.getState());
-    },
+    setTheme: (theme: BaseTheme) => engine.setTheme(theme),
+    setStyle: (style: string) => engine.setStyle(style),
   };
 
   return (
-    <ThemeProviderContext.Provider value={value}>
-      {children}
-    </ThemeProviderContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
-
-export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-
-  return context;
-};

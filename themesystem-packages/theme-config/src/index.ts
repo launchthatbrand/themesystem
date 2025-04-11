@@ -12,30 +12,9 @@ export function loadConfig(config?: z.infer<typeof configSchema>) {
 
   // Default configuration
   return defineConfig({
-    themes: {
-      light: {
-        name: "Light",
-        description: "Default light theme",
-      },
-      dark: {
-        name: "Dark",
-        description: "Default dark theme",
-      },
-      system: {
-        name: "System",
-        description: "Follows system preferences",
-      },
-    },
-    styles: {
-      default: {
-        name: "Default",
-        description: "Standard theme style",
-      },
-    },
-    extensions: {
-      components: {},
-      global: {},
-    },
+    baseTheme: "system",
+    styleTheme: "aggressive",
+    extensions: {},
     storage: {
       key: "theme-system-state",
       type: "localStorage",

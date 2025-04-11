@@ -1,3 +1,42 @@
+/* Template Theme CSS Variables */
+:root {
+  /* Color Tokens */
+  --template-background: #ffffff;
+  --template-foreground: #000000;
+  --template-card: #ffffff;
+  --template-card-foreground: #000000;
+  --template-popover: #ffffff;
+  --template-popover-foreground: #000000;
+  --template-primary: #000000;
+  --template-primary-foreground: #ffffff;
+  --template-secondary: #f5f5f5;
+  --template-secondary-foreground: #000000;
+
+  /* Effect Tokens */
+  --template-border: 1px solid #000000;
+  --template-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --template-radius: 0.5rem;
+
+  /* Typography Tokens */
+  --template-font-sans: system-ui, sans-serif;
+  --template-font-display: system-ui, sans-serif;
+  --template-font-body: system-ui, sans-serif;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --template-background: #000000;
+  --template-foreground: #ffffff;
+  --template-card: #000000;
+  --template-card-foreground: #ffffff;
+  --template-popover: #000000;
+  --template-popover-foreground: #ffffff;
+  --template-primary: #ffffff;
+  --template-primary-foreground: #000000;
+  --template-secondary: #1a1a1a;
+  --template-secondary-foreground: #ffffff;
+}
+
 /* Template Theme */
 .theme-template {
   /* Template theme variables */

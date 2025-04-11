@@ -16,6 +16,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
     "typescript": "^5.2.2"
   }
 }

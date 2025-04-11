@@ -1,9 +1,14 @@
 {
-  "extends": "../../../../tsconfig.json",
+  "extends": "@acme/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "declaration": true
+    "module": "preserve",
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@themesystem/*": ["../*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

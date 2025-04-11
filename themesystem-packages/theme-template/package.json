@@ -1,7 +1,7 @@
 {
-  "name": "@acme/theme-template",
+  "name": "@themesystem/template",
   "version": "0.1.0",
-  "description": "Template theme for the ACME Theme System",
+  "description": "Template theme for ThemeSystem - A starting point for creating new themes",
   "author": "ACME Corp",
   "license": "MIT",
   "main": "dist/index.js",
@@ -9,18 +9,22 @@
   "style": "dist/css/template.css",
   "files": [
     "dist",
-    "README.md"
+    "src"
   ],
   "scripts": {
-    "build": "pnpm build:ts && pnpm build:css && pnpm build:preview",
-    "build:ts": "tsc",
-    "build:css": "mkdir -p dist/css && cp src/template.css dist/css/",
-    "build:preview": "node ../../scripts/generate-theme-preview.js --theme=template"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {
+  "dependencies": {
+    "@themesystem/config": "workspace:*",
     "@themesystem/core": "workspace:*"
   },
   "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
     "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": "catalog:react19"
   }
 }

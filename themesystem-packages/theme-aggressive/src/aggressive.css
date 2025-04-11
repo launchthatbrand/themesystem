@@ -1,0 +1,161 @@
+/* Aggressive Theme CSS Variables */
+:root {
+  /* Color Tokens */
+  --aggressive-background: #000000;
+  --aggressive-foreground: #ff0000;
+  --aggressive-card: #000000;
+  --aggressive-card-foreground: #ff0000;
+  --aggressive-popover: #000000;
+  --aggressive-popover-foreground: #ff0000;
+  --aggressive-primary: #ff0000;
+  --aggressive-primary-foreground: #000000;
+  --aggressive-secondary: #ff3333;
+  --aggressive-secondary-foreground: #000000;
+  --aggressive-accent: #00ff00;
+  --aggressive-accent-foreground: #000000;
+  --aggressive-destructive: #ff0000;
+  --aggressive-destructive-foreground: #000000;
+
+  /* Effect Tokens */
+  --aggressive-border: 2px solid #ff0000;
+  --aggressive-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  --aggressive-radius: 0;
+  --aggressive-glow: 0 0 10px #ff0000;
+
+  /* Typography Tokens */
+  --aggressive-font-sans: "Impact", "Arial Black", sans-serif;
+  --aggressive-font-display: "Impact", "Arial Black", sans-serif;
+  --aggressive-font-body: "Impact", "Arial Black", sans-serif;
+  --aggressive-font-size-base: 16px;
+  --aggressive-font-size-lg: 20px;
+  --aggressive-font-size-xl: 28px;
+  --aggressive-font-size-2xl: 36px;
+  --aggressive-font-weight-normal: 400;
+  --aggressive-font-weight-medium: 600;
+  --aggressive-font-weight-bold: 800;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --aggressive-background: #000000;
+  --aggressive-foreground: #ff0000;
+  --aggressive-card: #000000;
+  --aggressive-card-foreground: #ff0000;
+  --aggressive-popover: #000000;
+  --aggressive-popover-foreground: #ff0000;
+  --aggressive-primary: #ff0000;
+  --aggressive-primary-foreground: #000000;
+  --aggressive-secondary: #ff3333;
+  --aggressive-secondary-foreground: #000000;
+  --aggressive-accent: #00ff00;
+  --aggressive-accent-foreground: #000000;
+  --aggressive-border: 2px solid #ff0000;
+  --aggressive-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+  --aggressive-glow: 0 0 15px #ff0000;
+}
+
+/* Base Styles */
+.aggressive-card {
+  background: var(--aggressive-card);
+  border: var(--aggressive-border);
+  box-shadow: var(--aggressive-shadow);
+  border-radius: var(--aggressive-radius);
+  transition: all 0.3s ease;
+}
+
+.aggressive-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+}
+
+.aggressive-button {
+  background: var(--aggressive-primary);
+  color: var(--aggressive-primary-foreground);
+  border: var(--aggressive-border);
+  box-shadow: var(--aggressive-shadow);
+  border-radius: var(--aggressive-radius);
+  transition: all 0.2s ease;
+  font-family: var(--aggressive-font-sans);
+  font-size: var(--aggressive-font-size-base);
+  font-weight: var(--aggressive-font-weight-bold);
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.aggressive-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--aggressive-primary);
+  text-shadow: 0 0 10px var(--aggressive-primary);
+}
+
+.aggressive-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 0, 0, 0.2),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.aggressive-button:hover::before {
+  transform: translateX(100%);
+}
+
+/* Typography Styles */
+.aggressive-heading {
+  font-family: var(--aggressive-font-display);
+  font-weight: var(--aggressive-font-weight-bold);
+  line-height: 1.1;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: var(--aggressive-glow);
+}
+
+.aggressive-heading-2xl {
+  font-size: var(--aggressive-font-size-2xl);
+}
+
+.aggressive-heading-xl {
+  font-size: var(--aggressive-font-size-xl);
+}
+
+.aggressive-text {
+  font-family: var(--aggressive-font-body);
+  font-size: var(--aggressive-font-size-base);
+  line-height: 1.4;
+  margin: 0;
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+.aggressive-text-lg {
+  font-size: var(--aggressive-font-size-lg);
+}
+
+/* Animation Effects */
+@keyframes aggressive-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+.aggressive-pulse {
+  animation: aggressive-pulse 2s infinite;
+}

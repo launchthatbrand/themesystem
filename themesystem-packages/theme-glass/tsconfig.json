@@ -3,15 +3,13 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "jsx": "react-jsx",
     "baseUrl": ".",
-    "composite": true,
-    "declaration": true,
+    "module": "preserve",
+    "jsx": "react-jsx",
     "paths": {
-      "@themesystem/*": ["../theme-*/src"]
+      "@themesystem/*": ["../*"]
     }
   },
-  "references": [{ "path": "../theme-config" }, { "path": "../theme-ui" }],
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

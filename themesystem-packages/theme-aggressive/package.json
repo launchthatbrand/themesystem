@@ -1,5 +1,31 @@
 {
-  "name": "theme-aggressive",
-  "version": "0.0.0",
-  "private": true
+  "name": "@themesystem/aggressive",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Aggressive theme for ThemeSystem - Bold, high-contrast design with intense colors and dynamic effects",
+  "author": "ACME Corp",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/css/aggressive.css",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@themesystem/config": "workspace:*",
+    "@themesystem/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": "catalog:react19"
+  }
 }

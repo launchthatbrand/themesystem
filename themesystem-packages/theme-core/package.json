@@ -31,5 +31,8 @@
     "react": "catalog:react19",
     "typescript": "^5.2.2",
     "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@themesystem/ui": "workspace:*"
   }
 }

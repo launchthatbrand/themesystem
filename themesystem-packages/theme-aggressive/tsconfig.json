@@ -4,14 +4,13 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "react-jsx",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "baseUrl": ".",
-    "composite": true,
-    "declaration": true,
     "paths": {
-      "@themesystem/*": ["../theme-*/src"]
+      "@themesystem/*": ["../*"]
     }
   },
-  "references": [{ "path": "../theme-config" }, { "path": "../theme-ui" }],
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
-}
+} 

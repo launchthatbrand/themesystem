@@ -257,6 +257,9 @@ importers:
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.69.0(react@19.0.0)
+      '@themesystem/core':
+        specifier: workspace:*
+        version: link:../../themesystem-packages/theme-core
       '@themesystem/nextjs':
         specifier: workspace:*
         version: link:../../themesystem-packages/theme-nextjs
@@ -460,27 +463,6 @@ importers:
         specifier: 'catalog:'
         version: 5.8.2
 
-  packages/themesystem-ui:
-    devDependencies:
-      '@acme/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint
-      '@acme/prettier-config':
-        specifier: workspace:*
-        version: link:../../tooling/prettier
-      '@acme/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/typescript
-      eslint:
-        specifier: 'catalog:'
-        version: 9.23.0(jiti@2.4.2)
-      prettier:
-        specifier: 'catalog:'
-        version: 3.5.3
-      typescript:
-        specifier: 'catalog:'
-        version: 5.8.2
-
   packages/ui:
     dependencies:
       '@hookform/resolvers':
@@ -669,14 +651,40 @@ importers:
         specifier: 'catalog:'
         version: 5.8.2
 
-  themesystem-packages/theme-aggressive: {}
-
-  themesystem-packages/theme-brutalist:
+  themesystem-packages/theme-aggressive:
     dependencies:
+      '@themesystem/config':
+        specifier: workspace:*
+        version: link:../theme-config
       '@themesystem/core':
         specifier: workspace:*
         version: link:../theme-core
+      react:
+        specifier: catalog:react19
+        version: 19.0.0
     devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      typescript:
+        specifier: ^5.2.2
+        version: 5.8.2
+
+  themesystem-packages/theme-brutalist:
+    dependencies:
+      '@themesystem/config':
+        specifier: workspace:*
+        version: link:../theme-config
+      '@themesystem/core':
+        specifier: workspace:*
+        version: link:../theme-core
+      react:
+        specifier: catalog:react19
+        version: 19.0.0
+    devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       typescript:
         specifier: ^5.2.2
         version: 5.8.2
@@ -687,6 +695,9 @@ importers:
         specifier: ^3.22.4
         version: 3.24.2
     devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       typescript:
         specifier: ^5.2.2
         version: 5.8.2
@@ -699,6 +710,9 @@ importers:
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
+      '@themesystem/ui':
+        specifier: workspace:*
+        version: link:../theme-ui
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -745,10 +759,16 @@ importers:
 
   themesystem-packages/theme-glass:
     dependencies:
-      '@themesystem/core':
+      '@themesystem/config':
         specifier: workspace:*
-        version: link:../theme-core
+        version: link:../theme-config
+      react:
+        specifier: catalog:react19
+        version: 19.0.0
     devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       typescript:
         specifier: ^5.2.2
         version: 5.8.2
@@ -776,6 +796,9 @@ importers:
         specifier: catalog:react19
         version: 19.0.0(react@19.0.0)
     devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       '@types/react':
         specifier: catalog:react19
         version: 19.0.12
@@ -788,10 +811,19 @@ importers:
 
   themesystem-packages/theme-template:
     dependencies:
+      '@themesystem/config':
+        specifier: workspace:*
+        version: link:../theme-config
       '@themesystem/core':
         specifier: workspace:*
         version: link:../theme-core
+      react:
+        specifier: catalog:react19
+        version: 19.0.0
     devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       typescript:
         specifier: ^5.2.2
         version: 5.8.2
