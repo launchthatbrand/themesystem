@@ -656,9 +656,9 @@ importers:
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
-      '@themesystem/core':
+      '@themesystem/types':
         specifier: workspace:*
-        version: link:../theme-core
+        version: link:../theme-types
       react:
         specifier: catalog:react19
         version: 19.0.0
@@ -675,9 +675,9 @@ importers:
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
-      '@themesystem/core':
+      '@themesystem/types':
         specifier: workspace:*
-        version: link:../theme-core
+        version: link:../theme-types
       react:
         specifier: catalog:react19
         version: 19.0.0
@@ -691,6 +691,9 @@ importers:
 
   themesystem-packages/theme-config:
     dependencies:
+      '@themesystem/types':
+        specifier: workspace:*
+        version: link:../theme-types
       zod:
         specifier: ^3.22.4
         version: 3.24.2
@@ -704,64 +707,31 @@ importers:
 
   themesystem-packages/theme-core:
     dependencies:
-      '@acme/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
-      '@themesystem/ui':
+      '@themesystem/glass':
         specifier: workspace:*
-        version: link:../theme-ui
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
-      clsx:
-        specifier: ^2.1.0
-        version: 2.1.1
-      lucide-react:
-        specifier: ^0.487.0
-        version: 0.487.0(react@19.0.0)
-      tailwind-merge:
-        specifier: ^3.2.0
-        version: 3.2.0
+        version: link:../theme-glass
+      '@themesystem/types':
+        specifier: workspace:*
+        version: link:../theme-types
     devDependencies:
-      '@acme/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint
-      '@acme/prettier-config':
-        specifier: workspace:*
-        version: link:../../tooling/prettier
-      '@acme/tailwind-config':
-        specifier: workspace:*
-        version: link:../../tooling/tailwind
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
-      '@types/react':
-        specifier: catalog:react19
-        version: 19.0.12
-      eslint:
-        specifier: 'catalog:'
-        version: 9.23.0(jiti@2.4.2)
-      prettier:
-        specifier: 'catalog:'
-        version: 3.5.3
-      react:
-        specifier: catalog:react19
-        version: 19.0.0
       typescript:
         specifier: ^5.2.2
         version: 5.8.2
-      zod:
-        specifier: 'catalog:'
-        version: 3.24.2
 
   themesystem-packages/theme-glass:
     dependencies:
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
+      '@themesystem/types':
+        specifier: workspace:*
+        version: link:../theme-types
       react:
         specifier: catalog:react19
         version: 19.0.0
@@ -814,12 +784,21 @@ importers:
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
-      '@themesystem/core':
+      '@themesystem/types':
         specifier: workspace:*
-        version: link:../theme-core
+        version: link:../theme-types
       react:
         specifier: catalog:react19
         version: 19.0.0
+    devDependencies:
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      typescript:
+        specifier: ^5.2.2
+        version: 5.8.2
+
+  themesystem-packages/theme-types:
     devDependencies:
       '@acme/tsconfig':
         specifier: workspace:*
@@ -833,9 +812,21 @@ importers:
       '@acme/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@themesystem/aggressive':
+        specifier: workspace:*
+        version: link:../theme-aggressive
+      '@themesystem/brutalist':
+        specifier: workspace:*
+        version: link:../theme-brutalist
       '@themesystem/core':
         specifier: workspace:*
         version: link:../theme-core
+      '@themesystem/glass':
+        specifier: workspace:*
+        version: link:../theme-glass
+      '@themesystem/template':
+        specifier: workspace:*
+        version: link:../theme-template
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

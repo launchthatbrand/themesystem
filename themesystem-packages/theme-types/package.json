@@ -1,0 +1,22 @@
+{
+  "name": "@themesystem/types",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Shared types for ThemeSystem",
+  "author": "ACME Corp",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "typescript": "^5.2.2"
+  }
+}

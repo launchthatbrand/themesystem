@@ -1,38 +1,28 @@
 {
   "name": "@themesystem/core",
-  "private": true,
   "version": "0.1.0",
   "type": "module",
+  "description": "Core theme system functionality",
+  "author": "ACME Corp",
+  "license": "MIT",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
   },
   "scripts": {
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@acme/ui": "workspace:*",
     "@themesystem/config": "workspace:*",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.0",
-    "lucide-react": "^0.487.0",
-    "tailwind-merge": "^3.2.0"
+    "@themesystem/glass": "workspace:*",
+    "@themesystem/types": "workspace:*"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tailwind-config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
-    "@types/react": "catalog:react19",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
-    "react": "catalog:react19",
-    "typescript": "^5.2.2",
-    "zod": "catalog:"
-  },
-  "peerDependencies": {
-    "@themesystem/ui": "workspace:*"
+    "typescript": "^5.2.2"
   }
 }

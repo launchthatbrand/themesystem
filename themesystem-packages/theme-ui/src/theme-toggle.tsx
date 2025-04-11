@@ -8,12 +8,16 @@ import {
   DrawerTrigger,
 } from "./drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import { Theme, ThemeRegistry } from "@themesystem/core";
 
 import { Button } from "./button";
 import { useTheme } from "next-themes";
 
+const themeRegistry = ThemeRegistry.getInstance();
+
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const availableThemes = themeRegistry.getAllThemes();
 
   return (
     <Drawer modal={false}>
@@ -45,8 +49,23 @@ export function ThemeToggle() {
               </Tabs>
             </TabsContent>
             <TabsContent value="themes" className="mt-4">
-              <div className="text-sm text-muted-foreground">
-                Theme selection coming soon...
+              <div className="grid grid-cols-2 gap-4">
+                {availableThemes.map((theme: Theme) => (
+                  <Button
+                    key={theme.id}
+                    variant="outline"
+                    className="flex h-auto flex-col items-start gap-2 p-4"
+                    onClick={() => {
+                      // TODO: Implement theme switching
+                      console.log("Switching to theme:", theme.id);
+                    }}
+                  >
+                    <span className="font-medium">{theme.name}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {theme.description}
+                    </span>
+                  </Button>
+                ))}
               </div>
             </TabsContent>
             <TabsContent value="extensions" className="mt-4">

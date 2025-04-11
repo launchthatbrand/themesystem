@@ -1,14 +1,15 @@
 import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { ThemeProvider, ThemeToggle } from "@themesystem/core";
-
+import { ThemeProvider, ThemeToggle } from "@themesystem/nextjs";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-import { TRPCReactProvider } from "~/trpc/react";
-import { Toaster } from "@acme/ui/toast";
+
 import { cn } from "@acme/ui";
+import { Toaster } from "@acme/ui/toast";
+
 import { env } from "~/env";
+import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

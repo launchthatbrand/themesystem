@@ -18,7 +18,11 @@
   },
   "dependencies": {
     "@acme/ui": "workspace:*",
+    "@themesystem/aggressive": "workspace:*",
+    "@themesystem/brutalist": "workspace:*",
     "@themesystem/core": "workspace:*",
+    "@themesystem/glass": "workspace:*",
+    "@themesystem/template": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.0",
     "lucide-react": "^0.487.0",

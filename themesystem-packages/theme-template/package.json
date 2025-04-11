@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@themesystem/config": "workspace:*",
-    "@themesystem/core": "workspace:*"
+    "@themesystem/types": "workspace:*"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",

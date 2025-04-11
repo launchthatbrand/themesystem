@@ -1,10 +1,9 @@
 "use client";
 
-import { ThemeEngineImpl, ThemeEngineOptions } from "@themesystem/core";
-import { useEffect, useState } from "react";
-
-import { ThemeProvider as CoreProvider } from "@themesystem/ui";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
+import { ThemeEngine, ThemeEngineOptions } from "@themesystem/core";
+import { ThemeProvider as CoreProvider } from "@themesystem/ui";
 
 interface ClientThemeProviderProps extends ThemeEngineOptions {
   children: ReactNode;
@@ -18,7 +17,7 @@ export function ClientThemeProvider({
 }: ClientThemeProviderProps) {
   const [engine] = useState(
     () =>
-      new ThemeEngineImpl({
+      new ThemeEngine({
         defaultTheme,
         defaultStyle,
         storageKey,

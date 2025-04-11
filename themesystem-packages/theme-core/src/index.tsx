@@ -1,7 +1,6 @@
 import "./register-themes"; // This will run the registration
 
 import { Theme } from "@themesystem/types";
-
 import { ThemeRegistry } from "./theme-registry";
 
 export type { Theme };

@@ -1,6 +1,7 @@
 {
   "name": "@themesystem/glass",
   "version": "0.1.0",
+  "type": "module",
   "description": "Glass theme for ThemeSystem - Clean, minimal interface with subtle transparency effects",
   "author": "ACME Corp",
   "license": "MIT",
@@ -17,7 +18,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@themesystem/config": "workspace:*"
+    "@themesystem/config": "workspace:*",
+    "@themesystem/types": "workspace:*"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
