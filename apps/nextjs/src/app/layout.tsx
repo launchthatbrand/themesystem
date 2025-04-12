@@ -50,8 +50,8 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <ThemeProvider
-          attribute="data-theme-base"
-          styleAttribute="data-theme"
+          attribute="data-theme"
+          styleAttribute="data-theme-style"
           defaultTheme="system"
           enableSystem={true}
         >
