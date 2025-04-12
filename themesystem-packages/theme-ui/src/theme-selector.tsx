@@ -1,22 +1,26 @@
+import { useTheme } from "next-themes";
+
 import { Button } from "./button";
-import { useTheme } from "@themesystem/core";
+import { cn } from "./cn";
 
 interface ThemeSelectorProps {
-  themes: Array<{ id: "light" | "dark" | "system"; name: string }>;
+  themes: Array<{ id: string; name: string }>;
+  className?: string;
 }
 
-export function ThemeSelector({ themes }: ThemeSelectorProps) {
-  const { state, setTheme } = useTheme();
+export function ThemeSelector({ themes, className }: ThemeSelectorProps) {
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {themes.map((theme) => (
+    <div className={cn("grid grid-cols-2 gap-2", className)}>
+      {themes.map((themeItem) => (
         <Button
-          key={theme.id}
-          variant={state.theme === theme.id ? "default" : "outline"}
-          onClick={() => setTheme(theme.id)}
+          key={themeItem.id}
+          variant={theme === themeItem.id ? "default" : "outline"}
+          onClick={() => setTheme(themeItem.id)}
+          className="w-full"
         >
-          {theme.name}
+          {themeItem.name}
         </Button>
       ))}
     </div>

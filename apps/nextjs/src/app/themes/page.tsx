@@ -1,4 +1,7 @@
+"use client";
+
 import { themeRegistry } from "@themesystem/core";
+import { ThemeSelector } from "@themesystem/ui";
 
 export default function ThemesPage() {
   const themes = themeRegistry.getAllThemes();
@@ -9,6 +12,9 @@ export default function ThemesPage() {
   return (
     <div className="container mx-auto p-8">
       <h1 className="mb-8 text-4xl font-bold">Available Themes</h1>
+      <div className="mb-8">
+        <ThemeSelector themes={themes} />
+      </div>
       {themes.length === 0 ? (
         <div className="rounded-lg border p-6 text-center">
           <p className="text-muted-foreground">No themes found in registry</p>

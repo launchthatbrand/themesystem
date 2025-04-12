@@ -1,12 +1,13 @@
 "use client";
 
-import type { BaseTheme, ThemeEngineOptions, ThemeState } from "./types";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   ThemeProvider as NextThemesProvider,
   useTheme as useNextTheme,
 } from "next-themes";
-import { createContext, useContext, useEffect, useState } from "react";
 
+import type { BaseTheme, ThemeEngineOptions, ThemeState } from "./types";
+import { themeRegistry } from ".";
 import { ThemeEngineImpl } from "./theme-engine";
 
 interface ThemeContextType {
@@ -70,6 +71,7 @@ export function ThemeProvider({
       attribute={attribute}
       enableSystem={enableSystem}
       storageKey={storageKey}
+      themes={themeRegistry.getAllThemes().map((theme) => theme.id)}
     >
       <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
     </NextThemesProvider>

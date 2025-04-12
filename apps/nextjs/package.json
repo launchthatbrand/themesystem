@@ -23,6 +23,7 @@
     "@tanstack/react-query": "catalog:",
     "@themesystem/core": "workspace:*",
     "@themesystem/nextjs": "workspace:*",
+    "@themesystem/ui": "workspace:*",
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "catalog:",
