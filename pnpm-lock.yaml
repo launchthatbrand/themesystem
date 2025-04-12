@@ -774,6 +774,9 @@ importers:
       '@themesystem/core':
         specifier: workspace:*
         version: link:../theme-core
+      '@themesystem/types':
+        specifier: workspace:*
+        version: link:../theme-types
       '@themesystem/ui':
         specifier: workspace:*
         version: link:../theme-ui

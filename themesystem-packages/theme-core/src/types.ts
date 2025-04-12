@@ -1,56 +1,5 @@
+import type { BaseTheme, Theme } from "@themesystem/types/core";
 import { z } from "zod";
-
-// Base theme type (always light/dark/system)
-export type BaseTheme = "light" | "dark" | "system";
-
-// Theme interface
-export interface Theme {
-  id: string;
-  name: string;
-  description: string;
-  baseTheme?: BaseTheme;
-  tokens: {
-    colors: Record<string, string>;
-    effects?: {
-      blur?: string;
-      border?: string;
-      shadow?: string;
-      radius?: string;
-      glow?: string;
-    };
-    typography?: {
-      fontFamily?: {
-        sans?: string;
-        display?: string;
-        body?: string;
-      };
-      fontSize?: {
-        base?: string;
-        lg?: string;
-        xl?: string;
-        "2xl"?: string;
-      };
-      fontWeight?: {
-        normal?: string;
-        medium?: string;
-        bold?: string;
-      };
-    };
-  };
-  styles?: {
-    card?: Record<string, any>;
-    button?: Record<string, any>;
-    [key: string]: Record<string, any> | undefined;
-  };
-  dark?: {
-    colors?: Record<string, string>;
-    effects?: {
-      border?: string;
-      shadow?: string;
-      glow?: string;
-    };
-  };
-}
 
 // Theme tokens schema
 const themeTokensSchema = z.object({
@@ -179,25 +128,7 @@ export interface ThemeEngine {
   getAllThemes: () => Theme[];
 }
 
-export interface ThemeConfig {
-  base: {
-    target?: string;
-    attribute?: string;
-    defaultTheme?: string;
-    enableSystem?: boolean;
-    enableColorScheme?: boolean;
-    storageKey?: string;
-    themes?: string[];
-  };
-  extensions?: ThemeExtension[];
-  value?: Record<string, Record<string, string>>;
-}
-
-export interface ThemeExtension {
-  id: string;
-  target: string;
-  themes: string[];
-  defaultTheme?: string;
-  storageKey?: string;
-  inheritFrom?: string;
-}
+// Re-export types from @themesystem/types for convenience
+export type { ThemeConfig } from "@themesystem/types/config";
+export type { BaseTheme, Theme } from "@themesystem/types/core";
+export type { ThemeExtension } from "@themesystem/types/extensions";

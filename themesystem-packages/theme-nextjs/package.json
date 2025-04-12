@@ -22,7 +22,7 @@
   "dependencies": {
     "@themesystem/config": "workspace:*",
     "@themesystem/core": "workspace:*",
-    "@themesystem/theme-types": "workspace:*",
+    "@themesystem/types": "workspace:*",
     "@themesystem/ui": "workspace:*",
     "next": "^15.2.3",
     "react": "catalog:react19",

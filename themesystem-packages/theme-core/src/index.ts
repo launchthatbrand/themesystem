@@ -11,3 +11,12 @@ export const themeRegistry = ThemeRegistry.getInstance();
 export { ThemeProvider, useTheme } from "./theme-provider";
 export { ThemeEngineImpl as ThemeEngine } from "./theme-engine";
 export { defineConfig, loadConfig } from "@themesystem/config";
+
+// Export types
+export type {
+  BaseTheme,
+  ThemeState,
+  ThemeEngineOptions,
+  ThemeConfig,
+  ThemeExtension,
+} from "./types";

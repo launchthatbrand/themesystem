@@ -8,7 +8,19 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "default": "./src/index.js"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "default": "./src/core.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "default": "./src/config.js"
+    },
+    "./extensions": {
+      "types": "./dist/extensions.d.ts",
+      "default": "./src/extensions.js"
     }
   },
   "files": [
@@ -17,7 +29,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "clean": "git clean -xdf .turbo node_modules dist"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",

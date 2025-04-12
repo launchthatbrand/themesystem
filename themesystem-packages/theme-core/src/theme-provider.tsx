@@ -154,7 +154,7 @@ export function ThemeProvider({
   children,
   options,
   defaultTheme = "system",
-  attribute = "data-theme",
+  attribute = "class",
   enableSystem = true,
   enableColorScheme = true,
   storageKey = "theme",

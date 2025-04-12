@@ -1,4 +1,4 @@
-import type { Theme } from "@themesystem/types";
+import type { Theme } from "@themesystem/types/core";
 import { defineConfig } from "@themesystem/config";
 
 export const glassTheme: Theme = {
