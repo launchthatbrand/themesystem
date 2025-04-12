@@ -1,50 +1,81 @@
-import type { BaseTheme, ThemeEngineOptions, ThemeState } from "./types";
+import type {
+  BaseTheme,
+  ThemeConfig,
+  ThemeEngineOptions,
+  ThemeExtension,
+  ThemeState,
+} from "./types";
+
+type ThemeStateListener = (state: ThemeState) => void;
 
 export class ThemeEngineImpl {
   private state: ThemeState;
-  private subscribers: ((state: ThemeState) => void)[] = [];
+  private subscribers: Set<ThemeStateListener>;
+  private extensions: Map<string, ThemeExtension>;
+  private extensionThemes: Map<string, string>;
 
   constructor(options?: ThemeEngineOptions) {
     this.state = {
-      theme: "system",
-      style: "default",
+      theme: options?.defaultTheme || "light",
+      style: options?.defaultStyle || "",
       extensions: {},
     };
+    this.subscribers = new Set();
+    this.extensions = new Map();
+    this.extensionThemes = new Map();
+  }
 
-    if (options?.defaultTheme) {
-      this.setTheme(options.defaultTheme);
+  getState(): ThemeState {
+    return this.state;
+  }
+
+  setTheme(theme: BaseTheme): void {
+    this.state = { ...this.state, theme };
+    this.notifySubscribers();
+  }
+
+  setStyle(style: string): void {
+    this.state = { ...this.state, style };
+    this.notifySubscribers();
+  }
+
+  loadConfig(config: ThemeConfig): void {
+    if (config.extensions) {
+      this.setupExtensions(config.extensions);
     }
   }
 
-  public getState(): ThemeState {
-    return { ...this.state };
+  setupExtensions(extensions: ThemeExtension[]): void {
+    extensions.forEach((ext) => {
+      this.extensions.set(ext.id, ext);
+      this.extensionThemes.set(ext.id, ext.defaultTheme || "light");
+    });
   }
 
-  public setTheme(theme: BaseTheme): void {
-    this.state = {
-      ...this.state,
-      theme,
-    };
-    this.notifySubscribers();
+  setExtensionTheme(extensionId: string, theme: string): void {
+    if (this.extensions.has(extensionId)) {
+      this.extensionThemes.set(extensionId, theme);
+      this.notifySubscribers();
+    }
   }
 
-  public setStyle(style: string): void {
-    this.state = {
-      ...this.state,
-      style,
-    };
-    this.notifySubscribers();
+  getExtensionTheme(extensionId: string): string {
+    return this.extensionThemes.get(extensionId) || "light";
   }
 
-  public subscribe(callback: (state: ThemeState) => void): void {
-    this.subscribers.push(callback);
+  subscribe(listener: ThemeStateListener): void {
+    this.subscribers.add(listener);
+  }
+
+  unsubscribe(listener: ThemeStateListener): void {
+    this.subscribers.delete(listener);
+  }
+
+  dispose(): void {
+    this.subscribers.clear();
   }
 
   private notifySubscribers(): void {
-    this.subscribers.forEach((callback) => callback(this.state));
-  }
-
-  public dispose(): void {
-    this.subscribers = [];
+    this.subscribers.forEach((listener) => listener(this.state));
   }
 }

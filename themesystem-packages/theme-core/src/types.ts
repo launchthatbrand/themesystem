@@ -178,3 +178,26 @@ export interface ThemeEngine {
   getTheme: (id: string) => Theme | undefined;
   getAllThemes: () => Theme[];
 }
+
+export interface ThemeConfig {
+  base: {
+    target?: string;
+    attribute?: string;
+    defaultTheme?: string;
+    enableSystem?: boolean;
+    enableColorScheme?: boolean;
+    storageKey?: string;
+    themes?: string[];
+  };
+  extensions?: ThemeExtension[];
+  value?: Record<string, Record<string, string>>;
+}
+
+export interface ThemeExtension {
+  id: string;
+  target: string;
+  themes: string[];
+  defaultTheme?: string;
+  storageKey?: string;
+  inheritFrom?: string;
+}

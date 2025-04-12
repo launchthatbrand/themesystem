@@ -1,71 +1,41 @@
-import {
-  ThemeEngineOptions,
-  ThemeProvider,
-  defineConfig,
-  loadConfig,
-} from "@themesystem/core";
-
+import type { ThemeSystemConfig } from "@themesystem/theme-types";
 import { ReactNode } from "react";
-import { ThemeSystemConfig } from "@themesystem/config";
+import { ThemeProvider } from "@themesystem/core";
+import { ThemeToggle } from "@themesystem/ui";
+
+import { useThemeConfig } from "./provider";
 import { generateThemeScript } from "./utils";
 
-export { defineConfig };
+const defaultConfig: ThemeSystemConfig = {
+  baseTheme: "light",
+  styleTheme: "default",
+  themes: {
+    light: {
+      name: "Light",
+      description: "Light theme",
+    },
+    dark: {
+      name: "Dark",
+      description: "Dark theme",
+    },
+  },
+  styles: {
+    default: {
+      name: "Default",
+      description: "Default style",
+    },
+  },
+};
 
-// Server-side script to prevent flash of unstyled content
 const ServerThemeScript = ({ config }: { config: ThemeSystemConfig }) => {
-  const generateThemeScript = ({
-    defaultTheme,
-    defaultStyle,
-  }: {
-    defaultTheme: string;
-    defaultStyle: string;
-  }) => {
-    return `
-      (function() {
-        try {
-          const savedTheme = localStorage.getItem('theme-system-state');
-          const savedState = savedTheme ? JSON.parse(savedTheme) : null;
-          const theme = savedState?.theme || '${defaultTheme}';
-          const style = savedState?.style || '${defaultStyle}';
-          
-          document.documentElement.setAttribute('data-theme', theme);
-          document.documentElement.setAttribute('data-style', style);
-        } catch (e) {
-          console.error('Error setting initial theme:', e);
-        }
-      })();
-    `;
-  };
+  const script = generateThemeScript({
+    defaultTheme: config.baseTheme || "light",
+    defaultStyle: config.styleTheme || "",
+  });
 
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: generateThemeScript({
-          defaultTheme: config.baseTheme || "system",
-          defaultStyle: config.styleTheme || "aggressive",
-        }),
-      }}
-    />
-  );
+  return <script dangerouslySetInnerHTML={{ __html: script }} />;
 };
 
-// Server-side provider
-const ServerThemeProvider = ({
-  children,
-  config,
-}: {
-  children: ReactNode;
-  config: ThemeSystemConfig;
-}) => {
-  return (
-    <>
-      <ServerThemeScript config={config} />
-      {children}
-    </>
-  );
-};
-
-// Client-side provider
 const ClientThemeProvider = ({
   children,
   config,
@@ -73,28 +43,28 @@ const ClientThemeProvider = ({
   children: ReactNode;
   config: ThemeSystemConfig;
 }) => {
-  const options: ThemeEngineOptions = {
-    defaultTheme: config.baseTheme,
-    defaultStyle: config.styleTheme,
-    config,
-  };
-
-  return <ThemeProvider {...options}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider
+      defaultTheme={config.baseTheme}
+      defaultStyle={config.styleTheme}
+      enableSystem={true}
+      storageKey="theme-system-state"
+    >
+      {children}
+    </ThemeProvider>
+  );
 };
 
-// Create Next.js adapter
-export const createNextAdapter = (config: ThemeSystemConfig) => {
+export function createThemeProvider(config: ThemeSystemConfig = defaultConfig) {
   return {
-    ServerThemeProvider: ({ children }: { children: ReactNode }) => (
-      <ServerThemeProvider config={config}>{children}</ServerThemeProvider>
-    ),
-    ClientThemeProvider: ({ children }: { children: ReactNode }) => (
+    ThemeScript: () => <ServerThemeScript config={config} />,
+    ThemeProvider: ({ children }: { children: ReactNode }) => (
       <ClientThemeProvider config={config}>{children}</ClientThemeProvider>
     ),
   };
-};
+}
 
-// Re-export types and utilities
+// Re-export types and utils
 export * from "./types";
 export * from "./utils";
 
@@ -105,5 +75,4 @@ export * from "@themesystem/core";
 export * from "@themesystem/ui";
 
 // Export Next.js specific components
-export * from "./server-provider";
-export * from "./client-provider";
+export { ThemeProvider, ThemeToggle, useThemeConfig };

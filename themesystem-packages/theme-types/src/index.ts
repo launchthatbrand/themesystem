@@ -38,3 +38,22 @@ export interface Theme {
     effects?: Partial<Theme["tokens"]["effects"]>;
   };
 }
+
+export interface ThemeSystemConfig {
+  baseTheme: string;
+  styleTheme: string;
+  themes: Record<
+    string,
+    {
+      name: string;
+      description: string;
+    }
+  >;
+  styles: Record<
+    string,
+    {
+      name: string;
+      description: string;
+    }
+  >;
+}

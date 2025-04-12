@@ -1,7 +1,8 @@
 import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { ThemeProvider, ThemeToggle } from "@themesystem/nextjs";
+import { ThemeToggle } from "@themesystem/nextjs";
+import { ThemeConfigProvider } from "@themesystem/nextjs/server";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
@@ -39,7 +40,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -49,13 +50,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <ThemeProvider defaultTheme="system">
+        <ThemeConfigProvider>
           <TRPCReactProvider>{props.children}</TRPCReactProvider>
           <div className="absolute bottom-4 right-4">
             <ThemeToggle />
           </div>
           <Toaster />
-        </ThemeProvider>
+        </ThemeConfigProvider>
       </body>
     </html>
   );

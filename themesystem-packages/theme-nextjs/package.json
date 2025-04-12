@@ -4,9 +4,14 @@
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.tsx",
-    "./core": "./src/core.ts",
-    "./ui": "./src/ui.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.tsx"
+    },
+    "./server": {
+      "types": "./dist/server/theme-config.d.ts",
+      "default": "./src/server/theme-config.tsx"
+    }
   },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
@@ -17,6 +22,7 @@
   "dependencies": {
     "@themesystem/config": "workspace:*",
     "@themesystem/core": "workspace:*",
+    "@themesystem/theme-types": "workspace:*",
     "@themesystem/ui": "workspace:*",
     "next": "^15.2.3",
     "react": "catalog:react19",

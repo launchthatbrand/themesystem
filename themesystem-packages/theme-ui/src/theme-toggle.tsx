@@ -1,5 +1,8 @@
 "use client";
 
+import { Theme, ThemeRegistry, useTheme } from "@themesystem/core";
+
+import { Button } from "./button";
 import {
   Drawer,
   DrawerContent,
@@ -8,10 +11,6 @@ import {
   DrawerTrigger,
 } from "./drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
-import { Theme, ThemeRegistry } from "@themesystem/core";
-
-import { Button } from "./button";
-import { useTheme } from "next-themes";
 
 const themeRegistry = ThemeRegistry.getInstance();
 

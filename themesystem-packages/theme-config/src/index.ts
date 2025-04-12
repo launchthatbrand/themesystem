@@ -1,5 +1,6 @@
-import { configSchema } from "./types";
 import { z } from "zod";
+
+import { configSchema } from "./types";
 
 export function defineConfig(config: z.infer<typeof configSchema>) {
   return configSchema.parse(config);

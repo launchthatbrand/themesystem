@@ -21,6 +21,10 @@
     "@themesystem/glass": "workspace:*",
     "@themesystem/types": "workspace:*"
   },
+  "peerDependencies": {
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "typescript": "^5.2.2"

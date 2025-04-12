@@ -1,5 +1,6 @@
 {
   "name": "@themesystem/config",
+  "private": true,
   "version": "0.1.0",
   "type": "module",
   "description": "Theme configuration utilities for ThemeSystem",
@@ -9,12 +10,21 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
+    },
+    "./next": {
+      "types": "./dist/next/loader.d.ts",
+      "default": "./src/next/loader.ts"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "default": "./src/server/index.ts"
     }
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@themesystem/types": "workspace:*",
@@ -22,6 +32,7 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "fs": "0.0.1-security",
     "typescript": "^5.2.2"
   }
 }
