@@ -80,10 +80,12 @@ interface ThemeContextType {
   getExtensionTheme: (extensionId: string) => string;
   // Next-themes compatibility
   theme: string;
+  style: string;
   forcedTheme?: string;
+  forcedStyle?: string;
   resolvedTheme: string;
-  systemTheme?: "light" | "dark";
   themes: string[];
+  systemTheme?: "light" | "dark";
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
@@ -100,40 +102,59 @@ interface ThemeProviderProps {
   children: React.ReactNode;
   options?: ThemeEngineOptions;
   defaultTheme?: BaseTheme;
-  attribute?: "class" | "data-theme";
+  defaultStyle?: string;
+  attribute?: "class" | "data-theme" | "data-theme-base";
+  styleAttribute?: "class" | "data-theme" | "data-theme-style";
   enableSystem?: boolean;
   enableColorScheme?: boolean;
   storageKey?: string;
+  styleStorageKey?: string;
   // Next-themes compatibility
   forcedTheme?: string;
+  forcedStyle?: string;
   disableTransitionOnChange?: boolean;
   value?: Record<string, string>;
+  styleValue?: Record<string, string>;
   nonce?: string;
   // Theme extensions
   config?: ThemeConfig;
   extensions?: ThemeExtension[];
   target?: string | HTMLElement;
   onThemeChange?: (theme: string, target: HTMLElement) => void;
+  onStyleChange?: (style: string, target: HTMLElement) => void;
 }
 
 const ThemeScript = React.memo(
   ({
     forcedTheme,
+    forcedStyle,
     storageKey,
+    styleStorageKey,
     attribute,
+    styleAttribute,
     enableSystem,
     enableColorScheme,
     defaultTheme,
+    defaultStyle,
     value,
+    styleValue,
     nonce,
-  }: Omit<ThemeProviderProps, "children"> & { defaultTheme: string }) => {
+  }: Omit<ThemeProviderProps, "children"> & {
+    defaultTheme: string;
+    defaultStyle: string;
+  }) => {
     const scriptArgs = JSON.stringify([
       attribute,
+      styleAttribute,
       storageKey,
+      styleStorageKey,
       defaultTheme,
+      defaultStyle,
       forcedTheme,
+      forcedStyle,
       defaultThemes,
       value,
+      styleValue,
       enableSystem,
       enableColorScheme,
     ]).slice(1, -1);
@@ -143,7 +164,7 @@ const ThemeScript = React.memo(
         suppressHydrationWarning
         nonce={typeof window === "undefined" ? nonce : ""}
         dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})(${scriptArgs})`,
+          __html: `(${script})(${scriptArgs})`,
         }}
       />
     );
@@ -154,23 +175,31 @@ export function ThemeProvider({
   children,
   options,
   defaultTheme = "system",
-  attribute = "class",
+  defaultStyle = "default",
+  attribute = "data-theme-base",
+  styleAttribute = "data-theme",
   enableSystem = true,
   enableColorScheme = true,
   storageKey = "theme",
+  styleStorageKey = "theme-style",
   forcedTheme,
+  forcedStyle,
   disableTransitionOnChange = false,
   value,
+  styleValue,
   nonce,
   config,
   extensions,
-  target,
   onThemeChange,
+  onStyleChange,
 }: ThemeProviderProps) {
   const [engine] = useState(() => new ThemeEngineImpl(options));
   const [state, setState] = useState<ThemeState>(engine.getState());
   const [theme, setThemeState] = useState(
     () => getTheme(storageKey, defaultTheme) || "light",
+  );
+  const [style, setStyleState] = useState(
+    () => getTheme(styleStorageKey, defaultStyle) || "default",
   );
   const [resolvedTheme, setResolvedTheme] = useState(() =>
     theme === "system" ? getSystemTheme() : theme,
@@ -221,6 +250,10 @@ export function ThemeProvider({
       }
 
       enable?.();
+
+      if (onThemeChange) {
+        onThemeChange(resolved, d);
+      }
     },
     [
       attribute,
@@ -230,6 +263,41 @@ export function ThemeProvider({
       enableSystem,
       nonce,
       value,
+      onThemeChange,
+    ],
+  );
+
+  const applyStyle = useCallback(
+    (style: string) => {
+      if (!style) return;
+
+      const name = styleValue ? styleValue[style] : style;
+      const enable = disableTransitionOnChange ? disableAnimation(nonce) : null;
+      const d = document.documentElement;
+
+      if (styleAttribute === "class") {
+        d.classList.remove(...(styleValue ? Object.values(styleValue) : []));
+        if (name) d.classList.add(name);
+      } else if (styleAttribute.startsWith("data-")) {
+        if (name) {
+          d.setAttribute(styleAttribute, name);
+        } else {
+          d.removeAttribute(styleAttribute);
+        }
+      }
+
+      enable?.();
+
+      if (onStyleChange) {
+        onStyleChange(style, d);
+      }
+    },
+    [
+      styleAttribute,
+      disableTransitionOnChange,
+      nonce,
+      styleValue,
+      onStyleChange,
     ],
   );
 
@@ -247,6 +315,22 @@ export function ThemeProvider({
       }
     },
     [storageKey],
+  );
+
+  const setStyle = useCallback(
+    (value: string | ((prev: string) => string)) => {
+      if (typeof value === "function") {
+        setStyleState((prevStyle) => {
+          const newStyle = value(prevStyle);
+          saveToLS(styleStorageKey, newStyle);
+          return newStyle;
+        });
+      } else {
+        setStyleState(value);
+        saveToLS(styleStorageKey, value);
+      }
+    },
+    [styleStorageKey],
   );
 
   const handleMediaQuery = useCallback(
@@ -269,7 +353,7 @@ export function ThemeProvider({
     return () => media.removeListener(handleMediaQuery);
   }, [handleMediaQuery]);
 
-  // LocalStorage event handling
+  // LocalStorage event handling for theme
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== storageKey) return;
@@ -284,18 +368,38 @@ export function ThemeProvider({
     return () => window.removeEventListener("storage", handleStorage);
   }, [setTheme, storageKey, defaultTheme]);
 
+  // LocalStorage event handling for style
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key !== styleStorageKey) return;
+      if (!e.newValue) {
+        setStyle(defaultStyle);
+      } else {
+        setStyleState(e.newValue);
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [setStyle, styleStorageKey, defaultStyle]);
+
   // Theme change effect
   useEffect(() => {
-    if (theme) {
-      applyTheme(forcedTheme ?? theme);
-      if (onThemeChange && target) {
-        onThemeChange(
-          theme,
-          document.querySelector(target as string) as HTMLElement,
-        );
-      }
+    if (forcedTheme) {
+      applyTheme(forcedTheme);
+    } else if (theme) {
+      applyTheme(theme);
     }
-  }, [forcedTheme, theme, applyTheme, onThemeChange, target]);
+  }, [forcedTheme, theme, applyTheme]);
+
+  // Style change effect
+  useEffect(() => {
+    if (forcedStyle) {
+      applyStyle(forcedStyle);
+    } else if (style) {
+      applyStyle(style);
+    }
+  }, [forcedStyle, style, applyStyle]);
 
   // Engine subscription
   useEffect(() => {
@@ -319,21 +423,37 @@ export function ThemeProvider({
         engine.setTheme(theme);
         setTheme(theme);
       },
-      setStyle: (style: string) => engine.setStyle(style),
+      setStyle: (style: string) => {
+        engine.setStyle(style);
+        setStyle(style);
+      },
       setExtensionTheme: (extensionId: string, theme: string) =>
         engine.setExtensionTheme(extensionId, theme),
       getExtensionTheme: (extensionId: string) =>
         engine.getExtensionTheme(extensionId),
       // Next-themes compatibility
       theme,
+      style,
       forcedTheme,
+      forcedStyle,
       resolvedTheme: theme === "system" ? resolvedTheme : theme,
       themes: enableSystem ? [...defaultThemes, "system"] : defaultThemes,
       systemTheme: enableSystem
         ? (resolvedTheme as "light" | "dark")
         : undefined,
     }),
-    [state, engine, theme, forcedTheme, resolvedTheme, enableSystem, setTheme],
+    [
+      state,
+      engine,
+      theme,
+      style,
+      forcedTheme,
+      forcedStyle,
+      resolvedTheme,
+      enableSystem,
+      setTheme,
+      setStyle,
+    ],
   );
 
   return (
@@ -341,12 +461,17 @@ export function ThemeProvider({
       <ThemeScript
         {...{
           forcedTheme,
+          forcedStyle,
           storageKey,
+          styleStorageKey,
           attribute,
+          styleAttribute,
           enableSystem,
           enableColorScheme,
           defaultTheme,
+          defaultStyle,
           value,
+          styleValue,
           nonce,
         }}
       />

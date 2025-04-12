@@ -1,4 +1,3 @@
-import type { BaseTheme } from "@themesystem/types/core";
 import type { ReactNode } from "react";
 import { Theme, ThemeRegistry } from "@themesystem/core";
 
@@ -44,7 +43,7 @@ export function ThemeSelector({
   renderContainer,
   showPermissionWarning = true,
 }: ThemeSelectorProps) {
-  const { theme, setTheme } = useTheme();
+  const { style: currentStyle, setStyle } = useTheme();
   const themeRegistry = ThemeRegistry.getInstance();
   const availableThemes = themeRegistry.getAllThemes();
 
@@ -53,7 +52,8 @@ export function ThemeSelector({
     : availableThemes;
 
   const handleThemeChange = (themeId: string) => {
-    setTheme(themeId as BaseTheme);
+    console.log("handleThemeChange", themeId);
+    setStyle(themeId);
     onThemeSelected?.(themeId);
   };
 
@@ -106,7 +106,7 @@ export function ThemeSelector({
         name: themeItem.name,
         description: themeItem.description,
         preview: themeItem.preview,
-        isActive: theme === themeItem.id,
+        isActive: currentStyle === themeItem.id,
         onClick: () => handleThemeChange(themeItem.id),
       }),
     ),
