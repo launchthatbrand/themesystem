@@ -103,8 +103,8 @@ interface ThemeProviderProps {
   options?: ThemeEngineOptions;
   defaultTheme?: BaseTheme;
   defaultStyle?: string;
-  attribute?: "class" | "data-theme" | "data-theme-base";
-  styleAttribute?: "class" | "data-theme" | "data-theme-style";
+  attribute?: "class" | "data-theme";
+  styleAttribute?: "class" | "data-theme-style";
   enableSystem?: boolean;
   enableColorScheme?: boolean;
   storageKey?: string;
@@ -198,9 +198,11 @@ export function ThemeProvider({
   const [theme, setThemeState] = useState(
     () => getTheme(storageKey, defaultTheme) || "light",
   );
-  const [style, setStyleState] = useState(
-    () => getTheme(styleStorageKey, defaultStyle) || "default",
-  );
+  const [style, setStyleState] = useState(() => {
+    const savedStyle = getTheme(styleStorageKey, defaultStyle);
+    console.log("Initial style state:", { savedStyle, defaultStyle });
+    return savedStyle || defaultStyle;
+  });
   const [resolvedTheme, setResolvedTheme] = useState(() =>
     theme === "system" ? getSystemTheme() : theme,
   );
@@ -269,8 +271,7 @@ export function ThemeProvider({
 
   const applyStyle = useCallback(
     (style: string) => {
-      if (!style) return;
-
+      console.log("Applying style:", { style, styleValue });
       const name = styleValue ? styleValue[style] : style;
       const enable = disableTransitionOnChange ? disableAnimation(nonce) : null;
       const d = document.documentElement;
@@ -300,6 +301,26 @@ export function ThemeProvider({
       onStyleChange,
     ],
   );
+
+  // Initial style application
+  useEffect(() => {
+    console.log("Initial style effect:", { style, forcedStyle });
+    if (forcedStyle) {
+      applyStyle(forcedStyle);
+    } else if (style) {
+      applyStyle(style);
+    }
+  }, []); // Run only once on mount
+
+  // Style change effect
+  useEffect(() => {
+    console.log("Style change effect:", { style, forcedStyle });
+    if (forcedStyle) {
+      applyStyle(forcedStyle);
+    } else if (style) {
+      applyStyle(style);
+    }
+  }, [forcedStyle, style, applyStyle]);
 
   const setTheme = useCallback(
     (value: string | ((prev: string) => string)) => {
@@ -391,15 +412,6 @@ export function ThemeProvider({
       applyTheme(theme);
     }
   }, [forcedTheme, theme, applyTheme]);
-
-  // Style change effect
-  useEffect(() => {
-    if (forcedStyle) {
-      applyStyle(forcedStyle);
-    } else if (style) {
-      applyStyle(style);
-    }
-  }, [forcedStyle, style, applyStyle]);
 
   // Engine subscription
   useEffect(() => {

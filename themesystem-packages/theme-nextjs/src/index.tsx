@@ -1,7 +1,7 @@
 import type { ThemeSystemConfig } from "@themesystem/types";
 import { ReactNode } from "react";
 import { ThemeProvider } from "@themesystem/core";
-import { ThemeToggle } from "@themesystem/ui";
+import { ThemeToggle, ThemeSelector } from "@themesystem/ui";
 
 // import { useThemeConfig } from "./provider";
 import { generateThemeScript } from "./utils";
@@ -75,4 +75,4 @@ import { generateThemeScript } from "./utils";
 // export * from "@themesystem/ui";
 
 // Export Next.js specific components
-export { ThemeProvider, ThemeToggle, useThemeConfig };
+export { ThemeProvider, ThemeToggle, useThemeConfig, ThemeSelector };
