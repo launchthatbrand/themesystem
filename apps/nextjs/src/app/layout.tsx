@@ -1,15 +1,16 @@
 import "~/app/globals.css";
+import "../../../../themesystem-packages/theme-glass/src/glass.css";
 
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider, ThemeToggle } from "@themesystem/nextjs";
+
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-
-import { cn } from "@acme/ui";
-import { Toaster } from "@acme/ui/toast";
-
-import { env } from "~/env";
+import Link from "next/link";
 import { TRPCReactProvider } from "~/trpc/react";
+import { Toaster } from "@acme/ui/toast";
+import { cn } from "@acme/ui";
+import { env } from "~/env";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -55,10 +56,32 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           defaultTheme="system"
           enableSystem={true}
         >
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
+          <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+            <div className="container flex h-16 items-center">
+              <nav className="flex flex-1 items-center space-x-4 text-sm font-medium">
+                <Link href="/" className="hover:text-primary">
+                  Home
+                </Link>
+                <Link href="/themes" className="hover:text-primary">
+                  Themes
+                </Link>
+                <Link href="/demo" className="hover:text-primary">
+                  Demo
+                </Link>
+                <Link href="/extensions" className="hover:text-primary">
+                  Extensions
+                </Link>
+              </nav>
+              <div className="flex items-center">
+                <ThemeToggle />
+              </div>
+            </div>
+          </header>
+
+          <main className="container py-6">
+            <TRPCReactProvider>{props.children}</TRPCReactProvider>
+          </main>
+
           <Toaster />
         </ThemeProvider>
       </body>

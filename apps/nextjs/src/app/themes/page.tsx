@@ -1,29 +1,26 @@
 "use client";
 
-import { useTheme } from "@themesystem/core";
+import { Card, CardContent, CardHeader, CardTitle } from "@acme/ui/card";
 import { ThemeSelector, ThemeToggle } from "@themesystem/nextjs";
+
+import { Checkbox } from "@acme/ui/checkbox";
+import { useTheme } from "@themesystem/core";
 
 function DemoCard() {
   const { style } = useTheme();
 
   return (
-    <div className="card relative w-full max-w-md rounded-lg border bg-card p-6 shadow-lg transition-all duration-300">
-      <h3 className="mb-3 text-xl font-semibold text-card-foreground">
-        Theme Demo Card (Style: {style || "default"})
-      </h3>
-      <p className="mb-4 text-sm text-muted-foreground">
-        This card demonstrates the current theme styling. Switch between themes
-        to see how it changes.
-      </p>
-      <div className="flex items-center gap-3">
-        <button className="button rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
-          Primary Button
-        </button>
-        <button className="button rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground">
-          Secondary Button
-        </button>
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Theme Demo Card (Style: {style || "default"})</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-4 text-sm text-muted-foreground">
+          This card demonstrates the current theme styling. Switch between
+          themes to see how it changes.
+        </p>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -44,6 +41,7 @@ export default function ThemesPage() {
           </p>
           <div className="relative flex justify-center overflow-hidden rounded-xl bg-[url('/grid.svg')] p-8 before:absolute before:inset-0 before:bg-gradient-to-br before:from-blue-100/50 before:to-pink-100/50 before:content-[''] dark:before:from-blue-950/30 dark:before:to-pink-950/30">
             <DemoCard />
+            <Checkbox />
           </div>
         </div>
 

@@ -11,6 +11,16 @@
   --glass-primary-foreground: rgb(255, 255, 255);
   --glass-secondary: rgb(99, 102, 241);
   --glass-secondary-foreground: rgb(255, 255, 255);
+  --glass-opacity: 0.7;
+  --glass-blur: 12px;
+  --glass-border: 1px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
 
   /* Effect Tokens */
   --glass-blur: 8px;
@@ -23,10 +33,31 @@
   --glass-font-sans: system-ui, -apple-system, sans-serif;
   --glass-font-display: system-ui, -apple-system, sans-serif;
   --glass-font-body: system-ui, -apple-system, sans-serif;
+
+  /* Override only what's different from base theme */
+  --background: 48 33% 97%;
+  --foreground: 200 50% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 200 50% 10%;
+  --primary: 200 80% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 200 30% 95%;
+  --accent: 200 80% 50%;
+  --radius: 16px;
+
+  /* Glass theme specific layout overrides */
+  --sidebar-background: rgba(255, 255, 255, 0.7);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+
+  /* Glass theme fonts */
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Space Grotesk", sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
 /* Dark Mode Overrides */
-[data-theme-base="dark"] {
+[data-theme="dark"] {
   --glass-background: rgba(31, 41, 55, 0.8);
   --glass-foreground: rgb(243, 244, 246);
   --glass-card: rgba(31, 41, 55, 0.7);
@@ -36,13 +67,13 @@
 }
 
 /* Glass Theme Styles */
-[data-theme="glass"] {
+[data-theme-style="glass"] {
   background: var(--glass-background);
   color: var(--glass-foreground);
   font-family: var(--glass-font-body);
 }
 
-[data-theme="glass"] .glass {
+[data-theme-style="glass"] .card {
   background: var(--glass-background);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -52,7 +83,223 @@
   transition: all 0.2s ease;
 }
 
-[data-theme="glass"] .glass:hover {
+[data-theme-style="glass"] .glass:hover {
   box-shadow: var(--glass-shadow);
   transform: translateY(-1px);
+}
+
+[data-theme-style="glass"] button {
+  background: var(--glass-gradient);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border) solid rgba(255, 255, 255, 0.4);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1.5rem;
+  /* position: relative; */
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+[data-theme-style="glass"] [class*="bg-card"] {
+  background: var(--glass-gradient);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border) solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+  /* position: relative; */
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Target card header */
+[data-theme-style="glass"] [class*="bg-card"] h3 {
+  background: var(--glass-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: black;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+/* Styles for Checkbox components with role="checkbox" */
+[data-theme-style="glass"] [role="checkbox"] {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+[data-theme-style="glass"] [role="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+[data-theme-style="glass"] [role="checkbox"]:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme-style="glass"] [role="checkbox"]:focus-visible {
+  outline: 2px solid var(--glass-primary);
+  outline-offset: 2px;
+}
+
+[data-theme-style="glass"] [role="checkbox"][data-state="checked"] {
+  background: var(--glass-primary);
+  border-color: transparent;
+}
+
+[data-theme-style="glass"] [role="checkbox"][data-state="checked"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] [role="checkbox"] {
+  background: rgba(20, 20, 25, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] [role="checkbox"]:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Styles for TabsList components with role="tablist" */
+[data-theme-style="glass"] [role="tablist"] {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--glass-radius);
+  padding: 4px;
+  display: flex;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme-style="glass"] [role="tablist"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-gradient);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+[data-theme-style="glass"] [role="tab"] {
+  position: relative;
+  background: transparent;
+  color: var(--glass-foreground);
+  border-radius: calc(var(--glass-radius) - 2px);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+[data-theme-style="glass"] [role="tab"][data-state="active"] {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--glass-foreground);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme-style="glass"] [role="tab"]:hover:not([data-state="active"]) {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] [role="tablist"] {
+  background: rgba(15, 15, 20, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"]
+  [data-theme-style="glass"]
+  [role="tab"][data-state="active"] {
+  background: rgba(30, 30, 40, 0.9);
+  color: var(--glass-foreground);
+}
+
+[data-theme="dark"]
+  [data-theme-style="glass"]
+  [role="tab"]:hover:not([data-state="active"]) {
+  background: rgba(40, 40, 50, 0.5);
+}
+
+/* Styles for Input elements */
+[data-theme-style="glass"] input {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--glass-radius);
+  color: var(--glass-foreground);
+  padding: 0.75rem 1rem;
+  font-family: var(--glass-font-sans);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme-style="glass"] input::placeholder {
+  color: rgba(31, 41, 55, 0.6);
+}
+
+[data-theme-style="glass"] input:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme-style="glass"] input:focus {
+  outline: none;
+  border-color: var(--glass-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] input {
+  background: rgba(15, 15, 20, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--glass-foreground);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] input::placeholder {
+  color: rgba(243, 244, 246, 0.5);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] input:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] [data-theme-style="glass"] input:focus {
+  border-color: var(--glass-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  background: rgba(30, 30, 40, 0.6);
 }

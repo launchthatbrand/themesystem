@@ -1,7 +1,8 @@
 import { ThemeProvider } from "../provider";
+import type { ThemeSystemConfig } from "@themesystem/types/config";
 
 // Default config that can be overridden by user config
-const defaultConfig = {
+const defaultConfig: ThemeSystemConfig = {
   baseTheme: "light",
   styleTheme: "default",
   themes: {
@@ -20,7 +21,36 @@ const defaultConfig = {
       description: "Default style",
     },
   },
+  extensions: {},
 };
+
+/**
+ * Get the current theme configuration
+ * @param overrideConfig Optional configuration to override default values
+ * @returns ThemeSystemConfig
+ */
+export async function getThemeConfig(
+  overrideConfig?: Partial<ThemeSystemConfig>,
+): Promise<ThemeSystemConfig> {
+  // Merge default config with any overrides
+  return {
+    ...defaultConfig,
+    ...overrideConfig,
+    // Deep merge for nested objects
+    themes: {
+      ...defaultConfig.themes,
+      ...(overrideConfig?.themes || {}),
+    },
+    styles: {
+      ...defaultConfig.styles,
+      ...(overrideConfig?.styles || {}),
+    },
+    extensions: {
+      ...defaultConfig.extensions,
+      ...(overrideConfig?.extensions || {}),
+    },
+  };
+}
 
 export async function ThemeConfigProvider({
   children,

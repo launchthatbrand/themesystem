@@ -32,6 +32,7 @@ export interface ThemeSystemConfig {
       description: string;
     }
   >;
+  extensions?: Record<string, ThemeExtension>;
   styles: Record<
     string,
     {

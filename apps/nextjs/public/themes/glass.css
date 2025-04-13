@@ -1,0 +1,96 @@
+/* Glass Theme CSS Variables */
+:root {
+  /* Color Tokens */
+  --glass-background: rgba(255, 255, 255, 0.8);
+  --glass-foreground: rgb(31, 41, 55);
+  --glass-card: rgba(255, 255, 255, 0.7);
+  --glass-card-foreground: rgb(31, 41, 55);
+  --glass-popover: rgba(255, 255, 255, 0.7);
+  --glass-popover-foreground: rgb(31, 41, 55);
+  --glass-primary: rgb(59, 130, 246);
+  --glass-primary-foreground: rgb(255, 255, 255);
+  --glass-secondary: rgb(99, 102, 241);
+  --glass-secondary-foreground: rgb(255, 255, 255);
+  --glass-opacity: 0.7;
+  --glass-blur: 12px;
+  --glass-border: 1px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
+
+  /* Effect Tokens */
+  --glass-blur: 8px;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --glass-radius: 0.75rem;
+
+  /* Typography Tokens */
+  --glass-font-sans: system-ui, -apple-system, sans-serif;
+  --glass-font-display: system-ui, -apple-system, sans-serif;
+  --glass-font-body: system-ui, -apple-system, sans-serif;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --glass-background: rgba(31, 41, 55, 0.8);
+  --glass-foreground: rgb(243, 244, 246);
+  --glass-card: rgba(31, 41, 55, 0.7);
+  --glass-card-foreground: rgb(243, 244, 246);
+  --glass-popover: rgba(31, 41, 55, 0.7);
+  --glass-popover-foreground: rgb(243, 244, 246);
+}
+
+/* Glass Theme Styles */
+[data-theme-style="glass"] {
+  background: var(--glass-background);
+  color: var(--glass-foreground);
+  font-family: var(--glass-font-body);
+}
+
+[data-theme-style="glass"] .card {
+  background: var(--glass-background);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--glass-radius);
+  transition: all 0.2s ease;
+}
+
+[data-theme-style="glass"] .glass:hover {
+  box-shadow: var(--glass-shadow);
+  transform: translateY(-1px);
+}
+
+[data-theme-style="glass"] button {
+  background: var(--glass-gradient);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border) solid rgba(255, 255, 255, 0.4);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1.5rem;
+  /* position: relative; */
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+[data-theme-style="glass"] [class*="bg-card"] {
+  background: var(--glass-gradient);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border) solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+  /* position: relative; */
+  overflow: hidden;
+  transition: all 0.3s ease;
+}

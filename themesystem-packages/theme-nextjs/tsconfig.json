@@ -1,5 +1,12 @@
 {
-  "extends": "@acme/tsconfig/internal-package.json",
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "extends": "@acme/tsconfig/base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ESNext",
+    "target": "es6",
+    "moduleResolution": "bundler"
+  },
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"]
 }
