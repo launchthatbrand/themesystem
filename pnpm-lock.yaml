@@ -654,6 +654,8 @@ importers:
         specifier: 'catalog:'
         version: 5.8.2
 
+  themesystem-packages/docs: {}
+
   themesystem-packages/next-themes-custom:
     devDependencies:
       react:
@@ -805,6 +807,8 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.8.2
+
+  themesystem-packages/theme-system: {}
 
   themesystem-packages/theme-template:
     dependencies:

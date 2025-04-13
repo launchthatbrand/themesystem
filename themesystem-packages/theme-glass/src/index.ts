@@ -88,3 +88,6 @@ export const glassConfig: ThemeConfig = {
 };
 
 export default glassConfig;
+
+// Re-export needed types
+export type { Theme, ThemeConfig };

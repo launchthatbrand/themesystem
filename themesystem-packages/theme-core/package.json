@@ -8,17 +8,17 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "default": "./src/index.ts"
     },
     "./types": {
       "types": "./dist/types.d.ts",
-      "default": "./dist/types.js"
+      "default": "./src/types.ts"
     }
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@themesystem/config": "workspace:*",

@@ -12,11 +12,20 @@
     "dist",
     "src"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles": {
+      "default": "./src/glass.css"
+    }
+  },
   "scripts": {
-    "build": "tsc && npm run copy-files",
+    "build": "tsc && pnpm run copy-files",
     "copy-files": "copyfiles -u 1 src/**/*.css dist/",
     "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@themesystem/config": "workspace:*",

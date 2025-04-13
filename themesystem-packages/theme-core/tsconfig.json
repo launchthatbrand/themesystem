@@ -5,6 +5,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "declaration": true,
+    "composite": true,
+    "incremental": true,
     "jsx": "react-jsx",
     "noEmit": false,
     "allowImportingTsExtensions": false
