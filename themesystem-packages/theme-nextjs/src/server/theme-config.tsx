@@ -1,5 +1,6 @@
-import { ThemeProvider } from "../provider";
 import type { ThemeSystemConfig } from "@themesystem/types/config";
+
+import { ThemeProvider } from "../provider";
 
 // Default config that can be overridden by user config
 const defaultConfig: ThemeSystemConfig = {

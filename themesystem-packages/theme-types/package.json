@@ -8,21 +8,29 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./src/index.js"
+      "default": "./src/index.ts"
     },
     "./core": {
       "types": "./dist/core.d.ts",
-      "default": "./src/core.js"
+      "default": "./src/core.ts"
     },
     "./config": {
       "types": "./dist/config.d.ts",
-      "default": "./src/config.js"
+      "default": "./src/config.ts"
     },
     "./extensions": {
       "types": "./dist/extensions.d.ts",
-      "default": "./src/extensions.js"
+      "default": "./src/extensions.ts"
+    },
+    "./plugins": {
+      "types": "./dist/plugins.d.ts",
+      "default": "./src/plugins.ts"
     }
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",

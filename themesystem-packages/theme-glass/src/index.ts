@@ -2,6 +2,11 @@ import "./glass.css";
 
 import type { Theme, ThemeConfig } from "@themesystem/types";
 
+export * from "./glass.plugin";
+
+// Re-export the CSS path for direct usage if needed
+export const GLASS_THEME_CSS_PATH = "./glass.css";
+
 export const glassTheme: Theme = {
   id: "glass",
   name: "Glass Theme",

@@ -1,59 +1,42 @@
-import type { BaseTheme, Theme } from "@themesystem/types/core";
+import type { BaseTheme, Theme, ThemeExtension } from "@themesystem/types";
 import { z } from "zod";
 
 // Theme tokens schema
-const themeTokensSchema = z.object({
-  colors: z.record(z.string()).optional(),
-  typography: z
-    .object({
-      fontFamily: z.string().optional(),
-      fontSize: z.record(z.string()).optional(),
-      lineHeight: z.record(z.string()).optional(),
-      fontWeight: z.record(z.string()).optional(),
-    })
-    .optional(),
-  spacing: z.record(z.string()).optional(),
-  borderRadius: z.record(z.string()).optional(),
-  shadows: z.record(z.string()).optional(),
-  transitions: z.record(z.string()).optional(),
-});
-
-// Component variant schema
-const componentVariantSchema = z.record(
-  z.object({
-    base: z.record(z.string()),
-    variants: z.record(z.record(z.string())).optional(),
-    sizes: z.record(z.record(z.string())).optional(),
+export const themeTokensSchema = z.object({
+  colors: z.record(z.string()),
+  effects: z.object({
+    blur: z.string(),
+    border: z.string(),
+    shadow: z.string(),
+    radius: z.string(),
+    glow: z.string().optional(),
   }),
-);
-
-// Extension target schema
-const extensionTargetSchema = z.object({
-  dataAttribute: z.string(),
-  componentName: z.string().optional(),
+  typography: z.object({
+    fontFamily: z.object({
+      sans: z.string(),
+      display: z.string(),
+      body: z.string(),
+    }),
+    fontSize: z.record(z.string()).optional(),
+    fontWeight: z.record(z.string()).optional(),
+  }),
 });
 
-// Extension schema
-const extensionSchema = z.object({
+// Theme schema
+export const themeSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),
-  target: extensionTargetSchema,
-  cssPath: z.string().optional(),
-  theme: z
-    .object({
-      tokens: themeTokensSchema.optional(),
-      components: componentVariantSchema.optional(),
-    })
-    .optional(),
-  config: z.record(z.unknown()).optional(),
+  preview: z.string().optional(),
+  tokens: themeTokensSchema,
+  variants: z.record(themeTokensSchema.partial()).optional(),
+  components: z.record(z.any()).optional(),
 });
 
 // Config schema
-const configSchema = z.object({
+export const configSchema = z.object({
   baseTheme: z.enum(["light", "dark", "system"]).default("system"),
   styleTheme: z.string().optional(),
-  extensions: z.record(z.string(), extensionSchema).optional(),
   storage: z
     .object({
       key: z.string(),
@@ -78,25 +61,22 @@ const configSchema = z.object({
 });
 
 // Types
-export type ThemeSystemConfig = z.infer<typeof configSchema>;
-export type Extension = z.infer<typeof extensionSchema>;
-export type ExtensionTarget = z.infer<typeof extensionTargetSchema>;
+export type ThemeConfig = z.infer<typeof configSchema>;
 export type ThemeTokens = z.infer<typeof themeTokensSchema>;
-export type ComponentVariant = z.infer<typeof componentVariantSchema>;
 
 // Theme state
 export interface ThemeState {
   theme: BaseTheme;
   style: string;
   currentTheme?: Theme;
-  extensions: Record<string, Extension>;
+  extensions: Record<string, ThemeExtension>;
 }
 
 // Theme engine options
 export interface ThemeEngineOptions {
   defaultTheme?: BaseTheme;
   defaultStyle?: string;
-  config?: ThemeSystemConfig;
+  config?: ThemeConfig;
   storageKey?: string;
 }
 
@@ -129,7 +109,4 @@ export interface ThemeEngine {
   getAllThemes: () => Theme[];
 }
 
-// Re-export types from @themesystem/types for convenience
-export type { ThemeConfig } from "@themesystem/types/config";
-export type { BaseTheme, Theme } from "@themesystem/types/core";
-export type { ThemeExtension } from "@themesystem/types/extensions";
+export type { BaseTheme, Theme, ThemeExtension };

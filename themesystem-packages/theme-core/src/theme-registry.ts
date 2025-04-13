@@ -1,4 +1,4 @@
-import { Theme } from "./types";
+import { Theme } from "@themesystem/types";
 
 export class ThemeRegistry {
   private static instance: ThemeRegistry;

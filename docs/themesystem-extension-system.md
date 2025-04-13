@@ -19,248 +19,271 @@ PayloadCMS uses a function-based plugin system that allows plugins to:
 5. **Add Lifecycle Hooks**: Plugins can hook into initialization and other lifecycle events.
 6. **Maintain Disabled State**: Even when disabled, plugins can maintain database schema consistency.
 
-## Implementation Plan for Enhanced ThemeSystem Extensions
+## Proposed ThemeSystem Plugin Architecture
 
-Based on the PayloadCMS plugin model, here's a plan to enhance the ThemeSystem:
+Based on the PayloadCMS plugin model, here's the exact implementation pattern for ThemeSystem plugins:
 
-### 1. Function-Based Extension API
-
-```typescript
-// Before (current config-based approach)
-extensions: {
-  myExtension: {
-    id: "my-extension",
-    name: "My Extension",
-    target: { dataAttribute: "data-my-extension" },
-    theme: { /* ... */ }
-  }
-}
-
-// After (function-based plugin approach)
-plugins: [
-  myPlugin({ option1: true }),
-  anotherPlugin()
-]
-```
-
-### 2. Plugin Function Structure
+### 1. Plugin Definition Structure
 
 ```typescript
+import type { Theme, ThemeSystemConfig } from "@themesystem/types";
+
+export type ThemePluginConfig = {
+  /**
+   * Optional name for the plugin
+   */
+  name?: string;
+
+  /**
+   * List of themes to enhance with plugin styles
+   */
+  themes?: string[];
+
+  /**
+   * Whether the plugin is disabled
+   */
+  disabled?: boolean;
+
+  /**
+   * Custom options specific to this plugin
+   */
+  options?: Record<string, any>;
+};
+
+/**
+ * Example theme plugin that follows the PayloadCMS pattern
+ */
 export const myThemePlugin =
-  (pluginOptions: MyPluginOptions) =>
+  (pluginOptions: ThemePluginConfig) =>
   (config: ThemeSystemConfig): ThemeSystemConfig => {
-    // Modify or extend the config
+    // Ensure themes array exists
+    if (!config.themes) {
+      config.themes = {};
+    }
 
-    // Add extensions
+    // Add a new theme
+    config.themes["plugin-theme"] = {
+      name: "Plugin Theme",
+      description: "Theme added by plugin",
+    };
+
+    // Add extension to target specific elements
     if (!config.extensions) {
       config.extensions = {};
     }
 
-    config.extensions.myExtension = {
-      id: "my-extension",
-      name: pluginOptions.name || "My Extension",
-      target: { dataAttribute: "data-my-extension" },
+    // Add extension configuration
+    config.extensions["plugin-extension"] = {
+      id: "plugin-extension",
+      name: pluginOptions.name || "Plugin Extension",
+      target: {
+        dataAttribute: "data-plugin-extension",
+      },
       theme: {
-        /* ... */
+        tokens: {
+          colors: {
+            primary: "#0070f3",
+            secondary: "#ff4081",
+          },
+        },
       },
     };
 
-    // Register lifecycle hooks
-    const originalOnInit = config.onInit;
-    config.onInit = async (engine) => {
-      // Run original onInit if exists
-      if (originalOnInit) {
-        await originalOnInit(engine);
+    // Apply plugin to specific themes if specified
+    if (pluginOptions.themes) {
+      for (const themeName of pluginOptions.themes) {
+        if (config.themes[themeName]) {
+          // Enhance the existing theme
+          const existingTheme = config.themes[themeName];
+          existingTheme.enhancedByPlugin = true;
+        }
+      }
+    }
+
+    /**
+     * If the plugin is disabled, we still maintain the schema consistency
+     * but don't add dynamic features
+     */
+    if (pluginOptions.disabled) {
+      return config;
+    }
+
+    // Add UI components if system supports them
+    if (!config.ui) {
+      config.ui = {};
+    }
+
+    if (!config.ui.components) {
+      config.ui.components = {};
+    }
+
+    if (!config.ui.components.themeSelector) {
+      config.ui.components.themeSelector = [];
+    }
+
+    // Add custom theme selector component
+    config.ui.components.themeSelector.push(
+      `@themesystem/plugin-name/components#CustomThemeSelector`,
+    );
+
+    // Lifecycle hooks handling
+    const incomingOnInit = config.onInit;
+
+    config.onInit = async (themeEngine) => {
+      // Ensure we execute any existing onInit functions before running our own
+      if (incomingOnInit) {
+        await incomingOnInit(themeEngine);
       }
 
-      // Plugin-specific initialization
-      console.log("My plugin initialized!");
+      // Register dynamic theme
+      themeEngine.registerTheme({
+        id: "dynamic-plugin-theme",
+        name: "Dynamic Plugin Theme",
+        tokens: {
+          colors: {
+            primary: "#3498db",
+            secondary: "#2ecc71",
+          },
+          typography: {
+            fontFamily: "system-ui, sans-serif",
+            fontSize: {
+              base: "16px",
+              lg: "18px",
+            },
+          },
+        },
+      });
 
-      // Register dynamic theme or components
-      engine.registerTheme(myDynamicTheme);
+      // Load additional resources
+      await themeEngine.loadStylesheet("/themes/plugin-theme.css");
+
+      console.log("Theme plugin initialized successfully");
     };
 
     return config;
   };
 ```
 
-### 3. Plugin Capabilities
-
-1. **Extend Configuration**:
-
-   - Add extensions
-   - Register themes
-   - Configure storage options
-   - Set framework-specific options
-
-2. **Add UI Components**:
-
-   - Inject custom components into the theme provider
-   - Add theme controls
-   - Create custom theme selectors
-
-3. **Add Lifecycle Hooks**:
-
-   - `onInit`: Called when the theme engine initializes
-   - `onThemeChange`: Called when the theme changes
-   - `onStyleChange`: Called when the style changes
-   - `onBeforeSSR`: Called before server-side rendering
-
-4. **Register Dynamic Resources**:
-   - Register themes dynamically
-   - Add stylesheets on demand
-   - Generate dynamic tokens
-
-### 4. Implementation Steps
-
-1. **Create Plugin System Core**:
-
-   - Define plugin interface and types
-   - Create plugin registry
-   - Add plugin application mechanism
-
-2. **Modify Theme Engine**:
-
-   - Support plugin lifecycle hooks
-   - Allow plugins to modify configuration
-   - Add plugin context and state management
-
-3. **Update Configuration System**:
-
-   - Support plugins array in config
-   - Create plugin initialization pipeline
-   - Add plugin dependency resolution
-
-4. **Create Migration Path**:
-   - Support both current extension format and new plugin format
-   - Provide utilities to convert extensions to plugins
-   - Document migration process
-
-### 5. Example Implementation
+### 2. Using the Plugin in Configuration
 
 ```typescript
-// theme-plugin.ts
-export interface ThemePlugin {
-  id: string;
-  apply: (config: ThemeSystemConfig) => ThemeSystemConfig;
-  onInit?: (engine: ThemeEngine) => Promise<void>;
-  onThemeChange?: (theme: string) => void;
-  onStyleChange?: (style: string) => void;
-}
+import { anotherPlugin } from "@themesystem/another-plugin";
+import { defineConfig } from "@themesystem/core";
+import { myThemePlugin } from "@themesystem/my-plugin";
 
-// theme-config.ts
-export interface ThemeSystemConfig {
-  // Existing properties...
-  plugins?: ThemePlugin[];
-  onInit?: (engine: ThemeEngine) => Promise<void>;
-}
-
-// theme-engine.ts
-class ThemeEngine {
-  // Existing methods...
-
-  async applyPlugins(config: ThemeSystemConfig): Promise<ThemeSystemConfig> {
-    if (!config.plugins || config.plugins.length === 0) {
-      return config;
-    }
-
-    let resultConfig = { ...config };
-
-    // Apply each plugin to the config
-    for (const plugin of config.plugins) {
-      resultConfig = plugin.apply(resultConfig);
-    }
-
-    return resultConfig;
-  }
-
-  async initialize(config: ThemeSystemConfig): Promise<void> {
-    const finalConfig = await this.applyPlugins(config);
-
-    // Initialize with the processed config
-    this.config = finalConfig;
-
-    // Run onInit hooks from config and plugins
-    if (finalConfig.onInit) {
-      await finalConfig.onInit(this);
-    }
-
-    // Run onInit for each plugin
-    if (finalConfig.plugins) {
-      for (const plugin of finalConfig.plugins) {
-        if (plugin.onInit) {
-          await plugin.onInit(this);
-        }
-      }
-    }
-  }
-}
-```
-
-### 6. Example Usage
-
-```typescript
-// Create a plugin
-const myPlugin = (options) => ({
-  id: "my-plugin",
-  apply: (config) => {
-    // Add an extension
-    config.extensions = config.extensions || {};
-    config.extensions.myCustomExtension = {
-      id: "my-custom-extension",
-      name: options.name || "My Custom Extension",
-      target: { dataAttribute: "data-my-extension" },
-      theme: {
-        /* ... */
-      },
-    };
-
-    return config;
-  },
-  onInit: async (engine) => {
-    // Register a dynamic theme
-    engine.registerTheme({
-      id: "dynamic-theme",
-      name: "Dynamically Generated Theme",
-      tokens: {
-        /* ... */
-      },
-    });
-  },
-  onThemeChange: (theme) => {
-    console.log(`Theme changed to: ${theme}`);
-  },
-});
-
-// Use in config
 export default defineConfig({
   baseTheme: "light",
   styleTheme: "default",
-  plugins: [myPlugin({ name: "Custom Plugin" }), anotherPlugin()],
+
+  // Apply plugins directly to config
+  plugins: [
+    myThemePlugin({
+      name: "Custom Theme Plugin",
+      themes: ["light", "dark"],
+    }),
+    anotherPlugin({
+      disabled: process.env.NODE_ENV === "development",
+    }),
+  ],
+
+  // Other config options remain the same
+  themes: {
+    light: {
+      name: "Light",
+      description: "Light theme",
+    },
+    dark: {
+      name: "Dark",
+      description: "Dark theme",
+    },
+  },
+
+  storage: {
+    key: "theme-system-state",
+    type: "localStorage",
+  },
 });
 ```
 
-## Benefits of This Approach
+### 3. Plugin Application Process
 
-1. **Modularity**: Plugins can be developed, tested, and distributed independently.
-2. **Extensibility**: The system becomes more flexible and easier to extend.
-3. **Composition**: Multiple plugins can be combined to create complex themes.
-4. **Dynamic Registration**: Themes and extensions can be registered dynamically.
-5. **Lifecycle Management**: Plugins can hook into different phases of the theme lifecycle.
-6. **Better Developer Experience**: More intuitive API for extending the theme system.
+The plugin system will work exactly like PayloadCMS, with the following steps:
 
-## Migration Path
+1. **Plugin Application**: Each plugin function receives the config and returns a modified version
+2. **Order Matters**: Plugins are applied in the order they are defined
+3. **Direct Modification**: Plugins can directly modify any part of the config object
+4. **Lifecycle Integration**: Plugins can chain lifecycle hooks by preserving existing handlers
 
-1. **Keep Backward Compatibility**: Support the current extensions format.
-2. **Provide Conversion Utilities**: Help migrate from extensions to plugins.
-3. **Documentation**: Create comprehensive migration guides.
-4. **Gradual Adoption**: Allow mixing both approaches during transition.
+```typescript
+// Inside the ThemeEngine initialization
+function applyPlugins(config: ThemeSystemConfig): ThemeSystemConfig {
+  if (!config.plugins || !Array.isArray(config.plugins)) {
+    return config;
+  }
+
+  // Apply each plugin in sequence
+  return config.plugins.reduce(
+    (currentConfig, pluginFn) => pluginFn(currentConfig),
+    config,
+  );
+}
+```
+
+## Plugin Capabilities
+
+Following the PayloadCMS pattern, ThemeSystem plugins can:
+
+1. **Modify Theme Configuration**:
+   - Add new themes
+   - Enhance existing themes
+   - Configure theme properties
+2. **Add Extensions**:
+   - Create new extensions that target specific elements
+   - Define how themes apply to different components
+3. **Add UI Components**:
+   - Inject custom UI components into various parts of the theme system
+   - Create custom theme controls and selectors
+4. **Handle Lifecycle Events**:
+
+   - Hook into initialization
+   - React to theme changes
+   - Modify the runtime behavior
+
+5. **Load External Resources**:
+   - Load stylesheets dynamically
+   - Inject scripts or assets
+   - Connect to external services
+
+## Implementation Plan
+
+1. **Update Core Interfaces**:
+   - Add plugins array to `ThemeSystemConfig`
+   - Create plugin application mechanism
+2. **Enhance Theme Engine**:
+   - Add plugin application logic
+   - Support lifecycle hooks chaining
+   - Provide plugin context
+3. **Create Plugin Development Kit**:
+   - Develop utilities for plugin authors
+   - Create testing helpers
+   - Document plugin development process
+4. **Provide Migration Path**:
+   - Support both current and new plugin formats
+   - Offer conversion utilities
+   - Document upgrade process
+
+## Migration Steps
+
+1. Update core packages to support the plugin pattern
+2. Create plugin utilities and helpers
+3. Document the new approach for plugin developers
+4. Provide examples for common use cases
+5. Support existing extensions during transition period
 
 ## Next Steps
 
-1. Define the plugin interface and types
-2. Create the plugin registry and application mechanism
-3. Modify the theme engine to support plugins
-4. Update the configuration system
-5. Create examples and documentation
-6. Develop migration utilities
+1. Define exact plugin interface types
+2. Implement plugin application mechanism
+3. Update theme engine to support the plugin approach
+4. Create example plugins for testing
+5. Document the new plugin system for developers

@@ -727,9 +727,6 @@ importers:
       '@themesystem/config':
         specifier: workspace:*
         version: link:../theme-config
-      '@themesystem/glass':
-        specifier: workspace:*
-        version: link:../theme-glass
       '@themesystem/types':
         specifier: workspace:*
         version: link:../theme-types

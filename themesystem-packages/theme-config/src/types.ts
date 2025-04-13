@@ -55,6 +55,15 @@ const extensionSchema = z.object({
   config: z.record(z.unknown()).optional(),
 });
 
+// UI components schema
+const uiComponentsSchema = z
+  .object({
+    themeSelector: z.array(z.string()).optional(),
+    styleSelector: z.array(z.string()).optional(),
+    dashboard: z.array(z.string()).optional(),
+  })
+  .optional();
+
 // Main config schema
 export const configSchema = z.object({
   // Base theme (light/dark/system)
@@ -90,6 +99,21 @@ export const configSchema = z.object({
         .optional(),
     })
     .optional(),
+
+  // Plugins array - we can't validate the actual plugins here
+  // because they're functions, so we just allow any
+  plugins: z.array(z.any()).optional(),
+
+  // Function that is called when the theme engine initializes
+  // We can't validate this either since it's a function
+  onInit: z.any().optional(),
+
+  // UI components to use in the theme system
+  ui: z
+    .object({
+      components: uiComponentsSchema,
+    })
+    .optional(),
 });
 
 export type ThemeSystemConfig = z.infer<typeof configSchema>;
@@ -97,3 +121,4 @@ export type Extension = z.infer<typeof extensionSchema>;
 export type ExtensionTarget = z.infer<typeof extensionTargetSchema>;
 export type ThemeTokens = z.infer<typeof themeTokensSchema>;
 export type ComponentVariant = z.infer<typeof componentVariantSchema>;
+export type UIComponents = z.infer<typeof uiComponentsSchema>;

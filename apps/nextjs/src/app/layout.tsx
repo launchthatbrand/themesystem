@@ -2,15 +2,16 @@ import "~/app/globals.css";
 import "../../../../themesystem-packages/theme-glass/src/glass.css";
 
 import type { Metadata, Viewport } from "next";
+import Link from "next/link";
 import { ThemeProvider, ThemeToggle } from "@themesystem/nextjs";
-
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-import Link from "next/link";
-import { TRPCReactProvider } from "~/trpc/react";
-import { Toaster } from "@acme/ui/toast";
+
 import { cn } from "@acme/ui";
+import { Toaster } from "@acme/ui/toast";
+
 import { env } from "~/env";
+import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

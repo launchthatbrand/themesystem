@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@themesystem/config": "workspace:*",
-    "@themesystem/glass": "workspace:*",
     "@themesystem/types": "workspace:*"
   },
   "peerDependencies": {

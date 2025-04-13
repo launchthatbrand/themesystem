@@ -1,60 +1,52 @@
-// Base theme type (always light/dark/system)
+/**
+ * Base theme options
+ */
 export type BaseTheme = "light" | "dark" | "system";
 
-// Theme interface
+/**
+ * Theme tokens structure
+ */
+export interface ThemeTokens {
+  colors: {
+    background: string;
+    foreground: string;
+    card: string;
+    "card-foreground": string;
+    popover: string;
+    "popover-foreground": string;
+    primary: string;
+    "primary-foreground": string;
+    secondary: string;
+    "secondary-foreground": string;
+    [key: string]: string;
+  };
+  effects: {
+    blur: string;
+    border: string;
+    shadow: string;
+    radius: string;
+    glow?: string;
+  };
+  typography: {
+    fontFamily: {
+      sans: string;
+      display: string;
+      body: string;
+    };
+    fontSize?: Record<string, string>;
+    fontWeight?: Record<string, string>;
+  };
+}
+
+/**
+ * Theme definition structure
+ */
 export interface Theme {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   preview?: string;
-  baseTheme?: BaseTheme;
-  cssPath?: string;
-  tokens: {
-    colors: {
-      background: string;
-      foreground: string;
-      card: string;
-      "card-foreground": string;
-      popover: string;
-      "popover-foreground": string;
-      primary: string;
-      "primary-foreground": string;
-      secondary: string;
-      "secondary-foreground": string;
-    };
-    effects: {
-      blur: string;
-      border: string;
-      shadow: string;
-      radius: string;
-      glow?: string;
-    };
-    typography: {
-      fontFamily: {
-        sans: string;
-        display: string;
-        body: string;
-      };
-      fontSize?: {
-        base?: string;
-        lg?: string;
-        xl?: string;
-        "2xl"?: string;
-      };
-      fontWeight?: {
-        normal?: string;
-        medium?: string;
-        bold?: string;
-      };
-    };
-  };
-  styles?: {
-    card?: Record<string, any>;
-    button?: Record<string, any>;
-    [key: string]: Record<string, any> | undefined;
-  };
-  dark?: {
-    colors?: Partial<Theme["tokens"]["colors"]>;
-    effects?: Partial<Theme["tokens"]["effects"]>;
-  };
+  tokens: ThemeTokens;
+  variants?: Record<string, Partial<ThemeTokens>>;
+  components?: Record<string, any>;
 }

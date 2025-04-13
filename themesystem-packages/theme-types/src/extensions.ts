@@ -18,6 +18,8 @@ export interface ThemeExtension {
   defaultTheme?: string;
   storageKey?: string;
   inheritFrom?: string;
+  middleware?: ThemeMiddleware[];
+  onUninstall?: () => Promise<void>;
 }
 
 export interface ThemeState {
