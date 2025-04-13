@@ -8,6 +8,7 @@ export interface Theme {
   description: string;
   preview?: string;
   baseTheme?: BaseTheme;
+  cssPath?: string;
   tokens: {
     colors: {
       background: string;

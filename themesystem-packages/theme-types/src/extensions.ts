@@ -2,7 +2,18 @@ import type { Theme } from "./core.js";
 
 export interface ThemeExtension {
   id: string;
-  target: string;
+  name: string;
+  description?: string;
+  cssPath?: string;
+  target: {
+    dataAttribute: string;
+    componentName?: string;
+  };
+  theme?: {
+    tokens?: Theme["tokens"];
+    components?: Record<string, any>;
+  };
+  config?: Record<string, any>;
   themes: string[];
   defaultTheme?: string;
   storageKey?: string;

@@ -7,14 +7,7 @@ function DemoCard() {
   const { style } = useTheme();
 
   return (
-    <div
-      className="relative w-full max-w-md rounded-lg border bg-card p-6 shadow-lg transition-all duration-300"
-      style={{
-        backdropFilter: style === "glass" ? "blur(8px)" : "none",
-        WebkitBackdropFilter: style === "glass" ? "blur(8px)" : "none",
-        background: style === "glass" ? "rgba(var(--card), 0.7)" : undefined,
-      }}
-    >
+    <div className="card relative w-full max-w-md rounded-lg border bg-card p-6 shadow-lg transition-all duration-300">
       <h3 className="mb-3 text-xl font-semibold text-card-foreground">
         Theme Demo Card (Style: {style || "default"})
       </h3>
@@ -23,26 +16,10 @@ function DemoCard() {
         to see how it changes.
       </p>
       <div className="flex items-center gap-3">
-        <button
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all duration-300"
-          style={{
-            backdropFilter: style === "glass" ? "blur(8px)" : "none",
-            WebkitBackdropFilter: style === "glass" ? "blur(8px)" : "none",
-            background:
-              style === "glass" ? "rgba(var(--primary), 0.7)" : undefined,
-          }}
-        >
+        <button className="button rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
           Primary Button
         </button>
-        <button
-          className="rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground transition-all duration-300"
-          style={{
-            backdropFilter: style === "glass" ? "blur(8px)" : "none",
-            WebkitBackdropFilter: style === "glass" ? "blur(8px)" : "none",
-            background:
-              style === "glass" ? "rgba(var(--secondary), 0.7)" : undefined,
-          }}
-        >
+        <button className="button rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground">
           Secondary Button
         </button>
       </div>

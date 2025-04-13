@@ -171,6 +171,20 @@ const ThemeScript = React.memo(
   },
 );
 
+const ThemeStylesheet = React.memo(({ href }: { href: string }) => {
+  console.log("Rendering ThemeStylesheet with href:", href);
+  return (
+    <link
+      rel="stylesheet"
+      href={href}
+      data-theme-stylesheet=""
+      precedence="high"
+    />
+  );
+});
+
+ThemeStylesheet.displayName = "ThemeStylesheet";
+
 export function ThemeProvider({
   children,
   options,
@@ -193,6 +207,13 @@ export function ThemeProvider({
   onThemeChange,
   onStyleChange,
 }: ThemeProviderProps) {
+  console.log("ThemeProvider initializing with:", {
+    defaultTheme,
+    defaultStyle,
+    config,
+    extensions,
+  });
+
   const [engine] = useState(() => new ThemeEngineImpl(options));
   const [state, setState] = useState<ThemeState>(engine.getState());
   const [theme, setThemeState] = useState(
@@ -207,8 +228,16 @@ export function ThemeProvider({
     theme === "system" ? getSystemTheme() : theme,
   );
 
+  // Get active stylesheets
+  const activeStylesheets = useMemo(() => {
+    const sheets = engine.getStylesheets();
+    console.log("Active stylesheets:", sheets);
+    return sheets;
+  }, [engine, state.style]);
+
   // Load config and setup extensions
   useEffect(() => {
+    console.log("Loading config and extensions:", { config, extensions });
     if (config) {
       engine.loadConfig(config);
     }
@@ -469,25 +498,29 @@ export function ThemeProvider({
   );
 
   return (
-    <ThemeContext.Provider value={providerValue}>
+    <>
+      {activeStylesheets.map((sheet) => {
+        console.log("Rendering stylesheet:", sheet);
+        return <ThemeStylesheet key={sheet.id} href={sheet.href} />;
+      })}
       <ThemeScript
-        {...{
-          forcedTheme,
-          forcedStyle,
-          storageKey,
-          styleStorageKey,
-          attribute,
-          styleAttribute,
-          enableSystem,
-          enableColorScheme,
-          defaultTheme,
-          defaultStyle,
-          value,
-          styleValue,
-          nonce,
-        }}
+        forcedTheme={forcedTheme}
+        forcedStyle={forcedStyle}
+        storageKey={storageKey}
+        styleStorageKey={styleStorageKey}
+        attribute={attribute}
+        styleAttribute={styleAttribute}
+        enableSystem={enableSystem}
+        enableColorScheme={enableColorScheme}
+        defaultTheme={defaultTheme}
+        defaultStyle={defaultStyle}
+        value={value}
+        styleValue={styleValue}
+        nonce={nonce}
       />
-      {children}
-    </ThemeContext.Provider>
+      <ThemeContext.Provider value={providerValue}>
+        {children}
+      </ThemeContext.Provider>
+    </>
   );
 }

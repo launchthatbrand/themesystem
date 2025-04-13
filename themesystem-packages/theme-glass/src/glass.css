@@ -2,43 +2,47 @@
 :root {
   /* Color Tokens */
   --glass-background: rgba(255, 255, 255, 0.8);
-  --glass-foreground: 222.2 84% 4.9%;
-  --glass-card: 0 0% 100%;
-  --glass-card-foreground: 222.2 84% 4.9%;
-  --glass-popover: 0 0% 100%;
-  --glass-popover-foreground: 222.2 84% 4.9%;
-  --glass-primary: 221.2 83% 53.3%;
-  --glass-primary-foreground: 210 40% 98%;
-  --glass-secondary: 210 40% 96.1%;
-  --glass-secondary-foreground: 222.2 47.4% 11.2%;
+  --glass-foreground: rgb(31, 41, 55);
+  --glass-card: rgba(255, 255, 255, 0.7);
+  --glass-card-foreground: rgb(31, 41, 55);
+  --glass-popover: rgba(255, 255, 255, 0.7);
+  --glass-popover-foreground: rgb(31, 41, 55);
+  --glass-primary: rgb(59, 130, 246);
+  --glass-primary-foreground: rgb(255, 255, 255);
+  --glass-secondary: rgb(99, 102, 241);
+  --glass-secondary-foreground: rgb(255, 255, 255);
 
   /* Effect Tokens */
   --glass-blur: 8px;
   --glass-border: 1px solid rgba(255, 255, 255, 0.2);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --glass-radius: 0.75rem;
 
   /* Typography Tokens */
-  --glass-font-sans: "Inter", sans-serif;
-  --glass-font-display: "Inter", sans-serif;
-  --glass-font-body: "Inter", sans-serif;
+  --glass-font-sans: system-ui, -apple-system, sans-serif;
+  --glass-font-display: system-ui, -apple-system, sans-serif;
+  --glass-font-body: system-ui, -apple-system, sans-serif;
 }
 
 /* Dark Mode Overrides */
-[data-theme="dark"] {
-  --glass-background: rgba(20, 20, 30, 0.7);
-  --glass-card: 222.2 84% 4.9%;
-  --glass-card-foreground: 210 40% 98%;
-  --glass-popover: 222.2 84% 4.9%;
-  --glass-popover-foreground: 210 40% 98%;
-  --glass-primary: 217.2 91.2% 59.8%;
-  --glass-primary-foreground: 222.2 47.4% 11.2%;
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+[data-theme-base="dark"] {
+  --glass-background: rgba(31, 41, 55, 0.8);
+  --glass-foreground: rgb(243, 244, 246);
+  --glass-card: rgba(31, 41, 55, 0.7);
+  --glass-card-foreground: rgb(243, 244, 246);
+  --glass-popover: rgba(31, 41, 55, 0.7);
+  --glass-popover-foreground: rgb(243, 244, 246);
 }
 
-/* Base Styles */
-.glass-card {
+/* Glass Theme Styles */
+[data-theme="glass"] {
+  background: var(--glass-background);
+  color: var(--glass-foreground);
+  font-family: var(--glass-font-body);
+}
+
+[data-theme="glass"] .glass {
   background: var(--glass-background);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -48,20 +52,7 @@
   transition: all 0.2s ease;
 }
 
-.glass-card:hover {
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-}
-
-.glass-button {
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: var(--glass-border);
+[data-theme="glass"] .glass:hover {
   box-shadow: var(--glass-shadow);
-  border-radius: var(--glass-radius);
-  transition: all 0.2s ease;
-}
-
-.glass-button:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }

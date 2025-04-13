@@ -39,6 +39,7 @@ const extensionSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   target: extensionTargetSchema,
+  cssPath: z.string().optional(),
   theme: z
     .object({
       tokens: themeTokensSchema.optional(),

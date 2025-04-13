@@ -1,96 +1,90 @@
-import type { Theme } from "@themesystem/types/core";
-import { defineConfig } from "@themesystem/config";
+import "./glass.css";
+
+import type { Theme, ThemeConfig } from "@themesystem/types";
 
 export const glassTheme: Theme = {
   id: "glass",
-  name: "Glass",
-  description:
-    "Clean, minimal interface with subtle transparency effects and soft shadows",
+  name: "Glass Theme",
+  description: "A modern glass theme with blur effects",
+  cssPath: "./glass.css",
   tokens: {
     colors: {
-      background: "rgba(255, 255, 255, 0.8)",
-      foreground: "222.2 84% 4.9%",
-      card: "0 0% 100%",
-      "card-foreground": "222.2 84% 4.9%",
-      popover: "0 0% 100%",
-      "popover-foreground": "222.2 84% 4.9%",
-      primary: "221.2 83% 53.3%",
-      "primary-foreground": "210 40% 98%",
-      secondary: "210 40% 96.1%",
-      "secondary-foreground": "222.2 47.4% 11.2%",
+      background: "var(--glass-background)",
+      foreground: "var(--glass-foreground)",
+      card: "var(--glass-card)",
+      "card-foreground": "var(--glass-card-foreground)",
+      popover: "var(--glass-popover)",
+      "popover-foreground": "var(--glass-popover-foreground)",
+      primary: "var(--glass-primary)",
+      "primary-foreground": "var(--glass-primary-foreground)",
+      secondary: "var(--glass-secondary)",
+      "secondary-foreground": "var(--glass-secondary-foreground)",
     },
     effects: {
-      blur: "8px",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      shadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-      radius: "0.75rem",
+      blur: "var(--glass-blur)",
+      border: "var(--glass-border)",
+      shadow: "var(--glass-shadow)",
+      radius: "var(--glass-radius)",
     },
     typography: {
       fontFamily: {
-        sans: '"Inter", sans-serif',
-        display: '"Inter", sans-serif',
-        body: '"Inter", sans-serif',
+        sans: "var(--glass-font-sans)",
+        display: "var(--glass-font-display)",
+        body: "var(--glass-font-body)",
+      },
+      fontSize: {
+        base: "16px",
+        lg: "18px",
+        xl: "20px",
+        "2xl": "24px",
       },
     },
   },
+  dark: {
+    colors: {
+      background: "var(--glass-background)",
+      foreground: "var(--glass-foreground)",
+      card: "var(--glass-card)",
+      "card-foreground": "var(--glass-card-foreground)",
+      popover: "var(--glass-popover)",
+      "popover-foreground": "var(--glass-popover-foreground)",
+    },
+  },
   styles: {
-    // Apply glass styles when data-theme-style="glass"
-    '[data-theme-style="glass"]': {
-      // Global styles
-      "--glass-blur": "8px",
-      "--glass-border": "1px solid rgba(255, 255, 255, 0.2)",
-      "--glass-shadow": "0 8px 32px rgba(0, 0, 0, 0.1)",
-      "--glass-radius": "0.75rem",
-      "--glass-background": "rgba(255, 255, 255, 0.8)",
-
-      // Dark mode overrides
-      '&[data-theme="dark"]': {
-        "--glass-background": "rgba(20, 20, 30, 0.7)",
-        "--glass-border": "1px solid rgba(255, 255, 255, 0.1)",
-        "--glass-shadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
-      },
-
-      // Component styles
-      ".card": {
-        background: "var(--glass-background)",
-        backdropFilter: "blur(var(--glass-blur))",
-        WebkitBackdropFilter: "blur(var(--glass-blur))",
-        border: "var(--glass-border)",
-        boxShadow: "var(--glass-shadow)",
-        borderRadius: "var(--glass-radius)",
-        "&:hover": {
-          boxShadow: "0 10px 40px rgba(0, 0, 0, 0.15)",
-        },
-      },
-      ".button": {
-        backdropFilter: "blur(var(--glass-blur))",
-        WebkitBackdropFilter: "blur(var(--glass-blur))",
-      },
+    glass: {
+      background: "var(--glass-background)",
+      backdropFilter: "blur(var(--glass-blur))",
+      border: "var(--glass-border)",
+      boxShadow: "var(--glass-shadow)",
+      borderRadius: "var(--glass-radius)",
     },
   },
 };
 
-export const glassConfig = defineConfig({
-  baseTheme: "system",
-  styleTheme: "glass",
-  extensions: {
-    glass: {
+export const glassConfig: ThemeConfig = {
+  base: {
+    target: "html",
+    attribute: "data-theme-base",
+    defaultTheme: "light",
+    enableSystem: true,
+    enableColorScheme: true,
+    storageKey: "theme-base",
+    themes: ["light", "dark"],
+  },
+  extensions: [
+    {
       id: "glass",
       name: "Glass Theme",
+      description: "A modern glass theme with blur effects",
+      cssPath: "./glass.css",
       target: {
-        dataAttribute: "data-theme-style",
+        dataAttribute: "data-theme",
       },
-      theme: {
-        tokens: {
-          colors: glassTheme.tokens.colors,
-          shadows: {
-            default: glassTheme.tokens.effects?.shadow ?? "",
-            hover: "0 10px 40px rgba(0, 0, 0, 0.15)",
-          },
-        },
-      },
+      themes: ["glass"],
+      defaultTheme: "glass",
+      storageKey: "theme-style",
     },
-  },
-});
+  ],
+};
 
 export default glassConfig;
